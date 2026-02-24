@@ -1,6 +1,8 @@
+using System;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 using UnityEngine.Windows;
 
 [RequireComponent(typeof(Rigidbody))]  
@@ -39,7 +41,17 @@ public class PLayerMovement : MonoBehaviour
     void Update()
     {
         moveInput = action.Player.Move.ReadValue<Vector2>();
+        CheckResetInput();
     }
+
+    private void CheckResetInput()
+    {
+        if (action.Player.Reset.WasPressedThisFrame())
+        {
+           GameManager.ResetLevel();
+        }
+    }
+
 
     private void FixedUpdate()
     {

@@ -7,11 +7,10 @@ public class GravityCompassController : MonoBehaviour
     [Header("Referencias")]
     [SerializeField] private Transform arrowPivot;
     [SerializeField] private GravityController gravityController;
-    [SerializeField] private Transform cameraTransform;
 
     [Header("Rotación")]
-    [SerializeField] private float mouseSensitivity = 0.15f;
-    [SerializeField] private float gamepadSensitivity = 120f;
+    [SerializeField] private float mouseSensitivity = 0.1f;
+    [SerializeField] private float gamepadSensitivity = 100f;
     [SerializeField] private float smoothRotation = 15f;
     [SerializeField] private float verticalLimit = 89f;
 
@@ -25,7 +24,6 @@ public class GravityCompassController : MonoBehaviour
 
     private Vector2 lookInput;
     private bool rotatePressed;
-    private bool wasRotating;
 
     private void Awake()
     {
@@ -35,21 +33,18 @@ public class GravityCompassController : MonoBehaviour
     private void OnEnable() => input.Enable();
     private void OnDisable() => input.Disable();
 
+    private void Start()
+    {
+        AlignWithCurrentGravity();
+    }
+
     private void Update()
     {
         lookInput = input.Player.Look.ReadValue<Vector2>();
         rotatePressed = input.Player.RotateCompass.IsPressed();
 
-        // ================================
-        // MODO EDICIÓN (click derecho)
-        // ================================
         if (rotatePressed)
         {
-            if (!wasRotating)
-            {
-                BeginManualRotation();
-            }
-
             bool usingMouse =
                 Mouse.current != null &&
                 Mouse.current.delta.ReadValue() != Vector2.zero;
@@ -69,17 +64,12 @@ public class GravityCompassController : MonoBehaviour
         }
         else
         {
-            // Si acabamos de soltar click derecho → aplicar gravedad
-            if (wasRotating)
+            // Al soltar → snap
+            if (yaw != currentYaw || pitch != currentPitch)
             {
                 SnapAndApplyGravity();
             }
-
-            // Mientras NO se edita → seguir gravedad real
-            FollowCurrentGravity();
         }
-
-        wasRotating = rotatePressed;
     }
 
     private void LateUpdate()
@@ -87,74 +77,29 @@ public class GravityCompassController : MonoBehaviour
         currentYaw = Mathf.Lerp(currentYaw, yaw, smoothRotation * Time.deltaTime);
         currentPitch = Mathf.Lerp(currentPitch, pitch, smoothRotation * Time.deltaTime);
 
-        arrowPivot.localRotation = Quaternion.Euler(currentPitch, currentYaw, 0f);
+        arrowPivot.localRotation =
+            Quaternion.Euler(currentPitch, currentYaw, 0f);
     }
 
-    // =====================================================
-    // MODO NORMAL: siempre apuntar a la gravedad real
-    // =====================================================
-
-    private void FollowCurrentGravity()
-    {
-        Vector3 gravityWorld = gravityController.CurrentGravityVector.normalized;
-
-        // Convertimos gravedad mundo a espacio cámara
-        Vector3 gravityCameraSpace =
-            cameraTransform.InverseTransformDirection(gravityWorld);
-
-        Quaternion rot = Quaternion.LookRotation(gravityCameraSpace);
-
-        Vector3 euler = rot.eulerAngles;
-
-        yaw = euler.y;
-        pitch = NormalizeAngle(euler.x);
-    }
-
-    // =====================================================
-    // INICIO ROTACIÓN MANUAL
-    // =====================================================
-
-    private void BeginManualRotation()
-    {
-        Vector3 gravityWorld = gravityController.CurrentGravityVector.normalized;
-
-        Vector3 gravityCameraSpace =
-            cameraTransform.InverseTransformDirection(gravityWorld);
-
-        Quaternion rot = Quaternion.LookRotation(gravityCameraSpace);
-
-        Vector3 euler = rot.eulerAngles;
-
-        yaw = euler.y;
-        pitch = NormalizeAngle(euler.x);
-
-        currentYaw = yaw;
-        currentPitch = pitch;
-    }
-
-    // =====================================================
-    // SNAP Y APLICAR GRAVEDAD
-    // =====================================================
+    // ==============================
+    // SNAP A 6 DIRECCIONES
+    // ==============================
 
     private void SnapAndApplyGravity()
     {
-        // Dirección actual en espacio cámara
-        Vector3 cameraDir = Quaternion.Euler(pitch, yaw, 0f) * Vector3.forward;
+        Vector3 dir = arrowPivot.forward.normalized;
 
-        // Convertir a mundo
-        Vector3 worldDir =
-            cameraTransform.TransformDirection(cameraDir).normalized;
-
-        GravityDirection closest = GetClosestDirection(worldDir);
+        GravityDirection closest = GetClosestDirection(dir);
         Vector3 snappedVector = DirectionToVector(closest);
 
+        Quaternion snappedRotation = Quaternion.LookRotation(snappedVector);
+        Vector3 snappedEuler = snappedRotation.eulerAngles;
+
+        yaw = snappedEuler.y;
+        pitch = NormalizeAngle(snappedEuler.x);
+
         gravityController.SetGravity(closest);
-
-        // Re-alinear inmediatamente
-        FollowCurrentGravity();
     }
-
-    // =====================================================
 
     private GravityDirection GetClosestDirection(Vector3 dir)
     {
@@ -194,6 +139,23 @@ public class GravityCompassController : MonoBehaviour
         }
 
         return Vector3.down;
+    }
+
+    private void AlignWithCurrentGravity()
+    {
+        Vector3 currentGravity =
+            gravityController.CurrentGravityVector.normalized;
+
+        Quaternion rot = Quaternion.LookRotation(currentGravity);
+        Vector3 euler = rot.eulerAngles;
+
+        yaw = euler.y;
+        pitch = NormalizeAngle(euler.x);
+
+        currentYaw = yaw;
+        currentPitch = pitch;
+
+        arrowPivot.localRotation = rot;
     }
 
     private float NormalizeAngle(float angle)
