@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class LevelBoundsTrigger : MonoBehaviour
+public class LevelBounds : MonoBehaviour
 {
     private void OnTriggerExit(Collider other)
     {

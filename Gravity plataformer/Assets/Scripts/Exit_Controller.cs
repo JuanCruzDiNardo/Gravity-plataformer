@@ -29,6 +29,16 @@ public class ExitController : MonoBehaviour
     {
         GenerateIndicatorCubes();
         RegisterKeys();
+
+        CheckIfNoKeys();
+    }
+
+    private void CheckIfNoKeys()
+    {
+        if (keys == null || keys.Count == 0)
+        {
+            UnlockPlatform();
+        }
     }
 
     // =============================

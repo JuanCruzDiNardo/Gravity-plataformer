@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class ThirdPersonCamera : MonoBehaviour
+public class CameraController : MonoBehaviour
 {
     [Header("Target")]
     [SerializeField] private Transform target;

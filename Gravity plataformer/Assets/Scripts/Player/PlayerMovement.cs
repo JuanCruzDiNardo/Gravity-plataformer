@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.Windows;
 
 [RequireComponent(typeof(Rigidbody))]  
-public class PLayerMovement : MonoBehaviour
+public class PlayerMovement : MonoBehaviour
 {
     private PlayerInputAction action;
     private Vector2 moveInput;

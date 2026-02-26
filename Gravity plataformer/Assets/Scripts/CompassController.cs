@@ -2,25 +2,21 @@
 using UnityEngine.InputSystem;
 using static GravityController;
 
-public class GravityCompassController : MonoBehaviour
+public class CompassController : MonoBehaviour
 {
     [Header("Referencias")]
     [SerializeField] private Transform arrowPivot;
     [SerializeField] private GravityController gravityController;
 
     [Header("Rotación")]
-    [SerializeField] private float mouseSensitivity = 0.1f;
-    [SerializeField] private float gamepadSensitivity = 100f;
+    [SerializeField] private float mouseSensitivity = 0.2f;
+    [SerializeField] private float gamepadSensitivity = 150f;
     [SerializeField] private float smoothRotation = 15f;
-    [SerializeField] private float verticalLimit = 89f;
 
     private PlayerInputAction input;
 
-    private float yaw;
-    private float pitch;
-
-    private float currentYaw;
-    private float currentPitch;
+    private Vector3 currentDirection;
+    private Vector3 visualDirection;
 
     private Vector2 lookInput;
     private bool rotatePressed;
@@ -35,7 +31,9 @@ public class GravityCompassController : MonoBehaviour
 
     private void Start()
     {
-        AlignWithCurrentGravity();
+        currentDirection = gravityController.CurrentGravityVector.normalized;
+        visualDirection = currentDirection;
+        arrowPivot.rotation = Quaternion.LookRotation(currentDirection);
     }
 
     private void Update()
@@ -45,59 +43,46 @@ public class GravityCompassController : MonoBehaviour
 
         if (rotatePressed)
         {
-            bool usingMouse =
-                Mouse.current != null &&
-                Mouse.current.delta.ReadValue() != Vector2.zero;
-
-            if (usingMouse)
-            {
-                yaw += lookInput.x * mouseSensitivity;
-                pitch -= lookInput.y * mouseSensitivity;
-            }
-            else
-            {
-                yaw += lookInput.x * gamepadSensitivity * Time.deltaTime;
-                pitch -= lookInput.y * gamepadSensitivity * Time.deltaTime;
-            }
-
-            pitch = Mathf.Clamp(pitch, -verticalLimit, verticalLimit);
+            RotateDirection();
         }
         else
         {
-            // Al soltar → snap
-            if (yaw != currentYaw || pitch != currentPitch)
-            {
-                SnapAndApplyGravity();
-            }
+            SnapAndApplyGravity();
         }
     }
 
     private void LateUpdate()
     {
-        currentYaw = Mathf.Lerp(currentYaw, yaw, smoothRotation * Time.deltaTime);
-        currentPitch = Mathf.Lerp(currentPitch, pitch, smoothRotation * Time.deltaTime);
-
-        arrowPivot.localRotation =
-            Quaternion.Euler(currentPitch, currentYaw, 0f);
+        visualDirection = Vector3.Lerp(visualDirection, currentDirection, smoothRotation * Time.deltaTime);
+        arrowPivot.rotation = Quaternion.LookRotation(visualDirection);
     }
 
-    // ==============================
-    // SNAP A 6 DIRECCIONES
-    // ==============================
+    private void RotateDirection()
+    {
+        bool usingMouse =
+            Mouse.current != null &&
+            Mouse.current.delta.ReadValue() != Vector2.zero;
+
+        float sensitivity = usingMouse ? mouseSensitivity : gamepadSensitivity * Time.deltaTime;
+
+        float yaw = lookInput.x * sensitivity;
+        float pitch = -lookInput.y * sensitivity;
+
+        Quaternion yawRotation = Quaternion.AngleAxis(yaw, Vector3.up);
+        Quaternion pitchRotation = Quaternion.AngleAxis(pitch, Vector3.right);
+
+        currentDirection = yawRotation * pitchRotation * currentDirection;
+        currentDirection.Normalize();
+    }
 
     private void SnapAndApplyGravity()
     {
-        Vector3 dir = arrowPivot.forward.normalized;
+        if (rotatePressed) return;
 
-        GravityDirection closest = GetClosestDirection(dir);
-        Vector3 snappedVector = DirectionToVector(closest);
+        GravityDirection closest = GetClosestDirection(currentDirection);
+        Vector3 snapped = DirectionToVector(closest);
 
-        Quaternion snappedRotation = Quaternion.LookRotation(snappedVector);
-        Vector3 snappedEuler = snappedRotation.eulerAngles;
-
-        yaw = snappedEuler.y;
-        pitch = NormalizeAngle(snappedEuler.x);
-
+        currentDirection = snapped;
         gravityController.SetGravity(closest);
     }
 
@@ -139,30 +124,5 @@ public class GravityCompassController : MonoBehaviour
         }
 
         return Vector3.down;
-    }
-
-    private void AlignWithCurrentGravity()
-    {
-        Vector3 currentGravity =
-            gravityController.CurrentGravityVector.normalized;
-
-        Quaternion rot = Quaternion.LookRotation(currentGravity);
-        Vector3 euler = rot.eulerAngles;
-
-        yaw = euler.y;
-        pitch = NormalizeAngle(euler.x);
-
-        currentYaw = yaw;
-        currentPitch = pitch;
-
-        arrowPivot.localRotation = rot;
-    }
-
-    private float NormalizeAngle(float angle)
-    {
-        if (angle > 180f)
-            angle -= 360f;
-
-        return angle;
     }
 }
