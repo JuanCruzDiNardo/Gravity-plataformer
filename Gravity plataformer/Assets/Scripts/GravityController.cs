@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class GravityController : MonoBehaviour
@@ -20,6 +21,8 @@ public class GravityController : MonoBehaviour
 
     public Vector3 CurrentGravityVector { get; private set; }
 
+    public static event Action<GravityDirection> OnGravityChanged;
+
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
@@ -36,7 +39,7 @@ public class GravityController : MonoBehaviour
     public void SetGravity(GravityDirection newDirection)
     {
         currentDirection = newDirection;
-        UpdateGravityVector();
+        UpdateGravityVector();        
     }
 
     private void UpdateGravityVector()
@@ -50,5 +53,7 @@ public class GravityController : MonoBehaviour
             case GravityDirection.PosZ: CurrentGravityVector = Vector3.forward; break;
             case GravityDirection.NegZ: CurrentGravityVector = Vector3.back; break;
         }
+
+        OnGravityChanged?.Invoke(currentDirection);
     }
 }
