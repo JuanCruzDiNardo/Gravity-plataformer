@@ -41,7 +41,8 @@ public class MovingPlatform : MonoBehaviour
     {
         // Configuración automática del Rigidbody
         rb.useGravity = false;
-        rb.isKinematic = true;
+        rb.isKinematic = false;
+        rb.freezeRotation = true;
         rb.interpolation = RigidbodyInterpolation.Interpolate;
 
         if (gravityController == null)
@@ -94,15 +95,22 @@ public class MovingPlatform : MonoBehaviour
     private void MovePlatform()
     {
         if (isBlocked)
+        {
+            rb.linearVelocity = Vector3.zero;
             return;
+        }
 
-        Vector3 newPosition = Vector3.MoveTowards(
-            rb.position,
-            currentTarget,
-            moveSpeed * Time.fixedDeltaTime
-        );
+        Vector3 direction = (currentTarget - rb.position).normalized;
 
-        rb.MovePosition(newPosition);
+        float distance = Vector3.Distance(rb.position, currentTarget);
+
+        if (distance < 0.05f)
+        {
+            rb.linearVelocity = Vector3.zero;
+            return;
+        }
+
+        rb.linearVelocity = direction * moveSpeed;
     }
 
     // =========================
