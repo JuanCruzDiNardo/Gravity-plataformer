@@ -35,20 +35,17 @@ public class ExitController : MonoBehaviour
 
     private void CheckIfNoKeys()
     {
-        if (keys == null || keys.Count == 0)
+        if (keys == null || keys.Count == 0) // Si no hay llaves cargadas, se desbloquea automaticamente 
         {
             UnlockPlatform();
         }
     }
 
-    // =============================
-    // GENERAR CUBOS DINÁMICAMENTE
-    // =============================
-
     private void GenerateIndicatorCubes()
     {
         cubeRenderers.Clear();
 
+        //Generacion de indicadores de forma dinamica por cada llave
         for (int i = 0; i < keys.Count; i++)
         {
             GameObject cube = Instantiate(cubePrefab, cubeContainer);
@@ -61,22 +58,14 @@ public class ExitController : MonoBehaviour
         }
     }
 
-    // =============================
-    // REGISTRAR LLAVES
-    // =============================
-
     private void RegisterKeys()
     {
         for (int i = 0; i < keys.Count; i++)
         {
             int index = i;
-            keys[i].Initialize(this, index);
+            keys[i].Initialize(this, index); //Indica su index a cada llave
         }
     }
-
-    // =============================
-    // LLAVE ACTIVADA
-    // =============================
 
     public void ActivateKey(int index)
     {
@@ -97,10 +86,6 @@ public class ExitController : MonoBehaviour
         levelUnlocked = true;
         platformRenderer.material.color = platformCompletedColor;
     }
-
-    // =============================
-    // DETECTAR JUGADOR
-    // =============================
 
     private void OnTriggerEnter(Collider other)
     {

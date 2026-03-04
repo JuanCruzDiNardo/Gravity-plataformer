@@ -29,6 +29,7 @@ public class GravityController : MonoBehaviour
 
     private void FixedUpdate()
     {
+        //Efecto de gravedad direccional
         rb.AddForce(CurrentGravityVector * gravityStrength, ForceMode.Acceleration);
     }
 

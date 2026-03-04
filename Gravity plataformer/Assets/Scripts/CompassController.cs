@@ -5,7 +5,7 @@ using static GravityController;
 public class CompassController : MonoBehaviour
 {
     [Header("Referencias")]
-    [SerializeField] private Transform arrowPivot;
+    [SerializeField] private Transform arrowPivot; //Representaciopn visual
     [SerializeField] private GravityController gravityController;
 
     [Header("Rotación")]
@@ -43,10 +43,12 @@ public class CompassController : MonoBehaviour
 
         if (rotatePressed)
         {
+            //Seleccion de direccion
             RotateDirection();
         }
         else
         {
+            //Ajuste al eje mas cercano al soltar
             SnapAndApplyGravity();
         }
     }
@@ -59,6 +61,7 @@ public class CompassController : MonoBehaviour
 
     private void RotateDirection()
     {
+        //Deteccion del control
         bool usingMouse =
             Mouse.current != null &&
             Mouse.current.delta.ReadValue() != Vector2.zero;
@@ -68,6 +71,7 @@ public class CompassController : MonoBehaviour
         float yaw = lookInput.x * sensitivity;
         float pitch = -lookInput.y * sensitivity;
 
+        //Rotaciones relativas al eje global
         Quaternion yawRotation = Quaternion.AngleAxis(yaw, Vector3.up);
         Quaternion pitchRotation = Quaternion.AngleAxis(pitch, Vector3.right);
 
@@ -78,11 +82,12 @@ public class CompassController : MonoBehaviour
     private void SnapAndApplyGravity()
     {
         if (rotatePressed) return;
-
+        //Detecta el eje mas cercano
         GravityDirection closest = GetClosestDirection(currentDirection);
+        //Convierte el enum en un vector 3
         Vector3 snapped = DirectionToVector(closest);
 
-        currentDirection = snapped;
+        currentDirection = snapped; //Ajsute visual
         gravityController.SetGravity(closest);
     }
 
@@ -91,6 +96,7 @@ public class CompassController : MonoBehaviour
         float maxDot = -Mathf.Infinity;
         GravityDirection closest = GravityDirection.PosY;
 
+        //Se evaluan todos los ejes
         Check(Vector3.right, GravityDirection.PosX);
         Check(Vector3.left, GravityDirection.NegX);
         Check(Vector3.up, GravityDirection.PosY);
@@ -102,7 +108,7 @@ public class CompassController : MonoBehaviour
 
         void Check(Vector3 axis, GravityDirection gravityDir)
         {
-            float dot = Vector3.Dot(dir, axis);
+            float dot = Vector3.Dot(dir, axis); //Detecta el eje con el que se alineo mas
             if (dot > maxDot)
             {
                 maxDot = dot;

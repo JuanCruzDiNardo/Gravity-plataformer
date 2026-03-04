@@ -4,7 +4,7 @@ using UnityEngine.InputSystem;
 public class CameraController : MonoBehaviour
 {
     [Header("Target")]
-    [SerializeField] private Transform target;
+    [SerializeField] private Transform target; //Player
 
     [Header("Settings")]
     [SerializeField] private float distance = 6f;
@@ -43,17 +43,20 @@ public class CameraController : MonoBehaviour
 
     private void Update()
     {
+        //lectura de input
         lookInput = input.Player.Look.ReadValue<Vector2>();
         rotatePressed = input.Player.RotateCamera.IsPressed();
 
+        //si mantiene el click empieza a rotar
         if (rotatePressed)
         {
+            //detecta el tipo de control
             bool usingMouse = Mouse.current != null && Mouse.current.delta.ReadValue() != Vector2.zero;
 
             if (usingMouse)
             {
                 yaw += lookInput.x * mouseSensitivity;
-                pitch -= lookInput.y * mouseSensitivity;
+                pitch -= lookInput.y * mouseSensitivity; //el pitch se resta para invertir el movimiento, mover el mouse hacia arriba te hace mirar hacia arriba
             }
             else
             {
@@ -61,6 +64,7 @@ public class CameraController : MonoBehaviour
                 pitch -= lookInput.y * gamepadSensitivity * Time.deltaTime;
             }
 
+            //limite de movimiento vertical
             pitch = Mathf.Clamp(pitch, -30f, 60f);
         }
     }
@@ -74,6 +78,7 @@ public class CameraController : MonoBehaviour
 
         Quaternion rotation = Quaternion.Euler(currentPitch, currentYaw, 0f);
 
+        //calcula una orbita al rededor del jugador
         Vector3 desiredPosition =
             target.position
             - (rotation * Vector3.forward * distance)

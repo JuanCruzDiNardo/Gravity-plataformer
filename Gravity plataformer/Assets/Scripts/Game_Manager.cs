@@ -18,10 +18,6 @@ public class GameManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
-    // =========================
-    // RESET DE NIVEL
-    // =========================
-
     public static void ResetLevel()
     {
         Scene currentScene = SceneManager.GetActiveScene();
