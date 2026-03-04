@@ -611,6 +611,7 @@ GameObject:
   - component: {fileID: 1197573302}
   - component: {fileID: 1197573301}
   - component: {fileID: 1197573300}
+  - component: {fileID: 1197573303}
   m_Layer: 0
   m_Name: Cube (2)
   m_TagString: Untagged
@@ -710,6 +711,33 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1197573298}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!54 &1197573303
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1197573298}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!20 &1495682860 stripped
 Camera:
   m_CorrespondingSourceObject: {fileID: 8908368656961546490, guid: 0733997bbde8aaa4abb25146f53b9cac, type: 3}
@@ -1246,7 +1274,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb15db1f0dcd0b14bbc4cd67b4c7441b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MovingPlatform
-  axis: 2
+  axis: 0
   maxDisplacement: 20
   moveSpeed: 3
   gravityController: {fileID: 1637687441}
