@@ -28,10 +28,6 @@ public class MovingPlatform : MonoBehaviour
 
     private bool isBlocked;
 
-    // =========================
-    // INITIALIZATION
-    // =========================
-
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
@@ -55,10 +51,6 @@ public class MovingPlatform : MonoBehaviour
 
     }
 
-    // =========================
-    // EVENT SUBSCRIPTION
-    // =========================
-
     private void OnEnable()
     {
         GravityController.OnGravityChanged += UpdateTarget;
@@ -69,23 +61,16 @@ public class MovingPlatform : MonoBehaviour
         GravityController.OnGravityChanged -= UpdateTarget;
     }
 
-    // =========================
-    // EDITOR LIVE UPDATE
-    // =========================
-
     private void OnValidate()
     {
         if (!Application.isPlaying)
             return;
 
+        //Actualización de eje en el inspector
         startPosition = transform.position;
         CalculatePositions();
 
     }
-
-    // =========================
-    // PHYSICS UPDATE
-    // =========================
 
     private void FixedUpdate()
     {
@@ -113,10 +98,6 @@ public class MovingPlatform : MonoBehaviour
         rb.linearVelocity = direction * moveSpeed;
     }
 
-    // =========================
-    // COLLISION CONTROL
-    // =========================
-
     private void OnCollisionEnter(Collision collision)
     {
         isBlocked = true;
@@ -127,9 +108,6 @@ public class MovingPlatform : MonoBehaviour
         isBlocked = false;
     }
 
-    // =========================
-    // POSITION CALCULATION
-    // =========================
 
     private void CalculatePositions()
     {
@@ -154,10 +132,6 @@ public class MovingPlatform : MonoBehaviour
 
         targetMax = startPosition + offset;
     }
-
-    // =========================
-    // GRAVITY REACTION
-    // =========================
 
     private void UpdateTarget(GravityDirection gravity)
     {
@@ -187,6 +161,6 @@ public class MovingPlatform : MonoBehaviour
                 break;
         }
 
-        isBlocked = false; // reset bloqueo cuando cambia gravedad
+        isBlocked = false; // Reset del bloqueo cuando cambia la gravedad
     }
 }
