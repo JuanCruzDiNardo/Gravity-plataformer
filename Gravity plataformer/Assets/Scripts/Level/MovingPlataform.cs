@@ -26,6 +26,7 @@ public class MovingPlatform : MonoBehaviour
     private Vector3 targetMax;
     private Vector3 currentTarget;
 
+    private int collisionCount = 0;
     private bool isBlocked;
 
     private void Awake()
@@ -37,7 +38,7 @@ public class MovingPlatform : MonoBehaviour
     {
         // Configuración automática del Rigidbody
         rb.useGravity = false;
-        rb.isKinematic = false;
+        rb.isKinematic = true;
         rb.freezeRotation = true;
         rb.interpolation = RigidbodyInterpolation.Interpolate;
 
@@ -80,34 +81,35 @@ public class MovingPlatform : MonoBehaviour
     private void MovePlatform()
     {
         if (isBlocked)
-        {
-            rb.linearVelocity = Vector3.zero;
             return;
-        }
 
-        Vector3 direction = (currentTarget - rb.position).normalized;
-
-        float distance = Vector3.Distance(rb.position, currentTarget);
+        Vector3 direction = (currentTarget - rb.position);
+        float distance = direction.magnitude;
 
         if (distance < 0.05f)
-        {
-            rb.linearVelocity = Vector3.zero;
             return;
-        }
 
-        rb.linearVelocity = direction * moveSpeed;
+        direction.Normalize();
+
+        Vector3 newPosition =
+            rb.position + direction * moveSpeed * Time.fixedDeltaTime;
+
+        rb.MovePosition(newPosition);
     }
 
     private void OnCollisionEnter(Collision collision)
     {
+        collisionCount++;
         isBlocked = true;
     }
 
     private void OnCollisionExit(Collision collision)
     {
-        isBlocked = false;
-    }
+        collisionCount--;
 
+        if (collisionCount <= 0)
+            isBlocked = false;
+    }
 
     private void CalculatePositions()
     {
@@ -163,4 +165,38 @@ public class MovingPlatform : MonoBehaviour
 
         isBlocked = false; // Reset del bloqueo cuando cambia la gravedad
     }
+
+#if UNITY_EDITOR
+    //dibuja el desplazamiento de la plataforma en el inspector
+    private void OnDrawGizmosSelected()
+    {
+        Vector3 start = transform.position;
+        Vector3 offset = Vector3.zero;
+
+        switch (axis)
+        {
+            case MovementAxis.X:
+                offset = Vector3.right * maxDisplacement;
+                break;
+
+            case MovementAxis.Y:
+                offset = Vector3.up * maxDisplacement;
+                break;
+
+            case MovementAxis.Z:
+                offset = Vector3.forward * maxDisplacement;
+                break;
+        }
+
+        Vector3 end = start + offset;
+
+        // Línea de recorrido
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawLine(start, end);
+
+        // Cubo final
+        Gizmos.color = new Color(0f, 1f, 0f, 0.4f);
+        Gizmos.DrawCube(end, transform.localScale);
+    }
+#endif
 }

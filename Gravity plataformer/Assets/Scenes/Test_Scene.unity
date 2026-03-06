@@ -177,11 +177,11 @@ Rigidbody:
     m_Bits: 0
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 1
+  m_Constraints: 112
+  m_CollisionDetection: 1
 --- !u!114 &147726351
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -194,8 +194,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb15db1f0dcd0b14bbc4cd67b4c7441b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MovingPlatform
-  axis: 1
-  maxDisplacement: 20
+  axis: 2
+  maxDisplacement: 10
   moveSpeed: 5
   gravityController: {fileID: 1637687441}
 --- !u!65 &147726352
@@ -819,7 +819,7 @@ Rigidbody:
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 1
-  m_Constraints: 0
+  m_Constraints: 112
   m_CollisionDetection: 1
 --- !u!65 &1637687436
 BoxCollider:
@@ -939,7 +939,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GravityController
   currentDirection: 3
-  gravityStrength: 10
+  gravityStrength: 7
 --- !u!114 &1637687442
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1136,6 +1136,10 @@ PrefabInstance:
     - target: {fileID: 2555955360323402577, guid: 17f99615beb95c24ba658b573e1d7c1f, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2565744578570743799, guid: 17f99615beb95c24ba658b573e1d7c1f, type: 3}
+      propertyPath: axis
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2565744578570743799, guid: 17f99615beb95c24ba658b573e1d7c1f, type: 3}
       propertyPath: gravityController
