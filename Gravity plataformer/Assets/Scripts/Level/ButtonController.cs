@@ -71,4 +71,21 @@ public class ButtonController : MonoBehaviour
             ActivateObjects();
         }
     }
+
+#if UNITY_EDITOR
+    private void OnDrawGizmosSelected()
+    {
+        if (activables == null) return;
+
+        Gizmos.color = new Color(1f, 1f, 0f, 0.4f);
+
+        foreach (var obj in activables)
+        {
+            if (obj == null) continue;
+
+            Gizmos.DrawLine(transform.position, obj.transform.position);
+            Gizmos.DrawSphere(obj.transform.position, 0.1f);
+        }
+    }
+#endif
 }
