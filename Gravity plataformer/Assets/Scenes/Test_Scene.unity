@@ -427,6 +427,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CameraController
   target: {fileID: 1637687439}
+  CompassCamera: {fileID: 1495682861}
   distance: 6
   height: 2
   mouseSensitivity: 0.1
@@ -764,6 +765,11 @@ Transform:
 --- !u!20 &1495682860 stripped
 Camera:
   m_CorrespondingSourceObject: {fileID: 8908368656961546490, guid: 0733997bbde8aaa4abb25146f53b9cac, type: 3}
+  m_PrefabInstance: {fileID: 5586499009627655504}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &1495682861 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6082330021354628148, guid: 0733997bbde8aaa4abb25146f53b9cac, type: 3}
   m_PrefabInstance: {fileID: 5586499009627655504}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &1544426078 stripped
@@ -1224,20 +1230,24 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 1479519911808235806, guid: 0733997bbde8aaa4abb25146f53b9cac, type: 3}
+      propertyPath: cameraTransform
+      value: 
+      objectReference: {fileID: 330585546}
+    - target: {fileID: 1479519911808235806, guid: 0733997bbde8aaa4abb25146f53b9cac, type: 3}
       propertyPath: gravityController
       value: 
       objectReference: {fileID: 1637687441}
     - target: {fileID: 6275376366511918385, guid: 0733997bbde8aaa4abb25146f53b9cac, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 3.01267
+      value: 3.0126686
       objectReference: {fileID: 0}
     - target: {fileID: 6275376366511918385, guid: 0733997bbde8aaa4abb25146f53b9cac, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 6275376366511918385, guid: 0733997bbde8aaa4abb25146f53b9cac, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -5.49101
+      value: -5.491012
       objectReference: {fileID: 0}
     - target: {fileID: 6275376366511918385, guid: 0733997bbde8aaa4abb25146f53b9cac, type: 3}
       propertyPath: m_LocalRotation.w
@@ -1245,15 +1255,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6275376366511918385, guid: 0733997bbde8aaa4abb25146f53b9cac, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 6275376366511918385, guid: 0733997bbde8aaa4abb25146f53b9cac, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 6275376366511918385, guid: 0733997bbde8aaa4abb25146f53b9cac, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 6275376366511918385, guid: 0733997bbde8aaa4abb25146f53b9cac, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -1345,5 +1355,5 @@ SceneRoots:
   - {fileID: 832575519}
   - {fileID: 394353022}
   - {fileID: 1032978641}
-  - {fileID: 1637687439}
   - {fileID: 5586499009627655504}
+  - {fileID: 1637687439}

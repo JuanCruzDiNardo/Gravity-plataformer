@@ -5,6 +5,7 @@ public class CameraController : MonoBehaviour
 {
     [Header("Target")]
     [SerializeField] private Transform target; //Player
+    [SerializeField] private Transform CompassCamera; 
 
     [Header("Settings")]
     [SerializeField] private float distance = 6f;
@@ -86,5 +87,9 @@ public class CameraController : MonoBehaviour
 
         transform.position = desiredPosition;
         transform.LookAt(target.position + Vector3.up * 1.5f);
+
+        CompassCamera.transform.position = desiredPosition;
+        CompassCamera.LookAt(target.position + Vector3.up * 1.5f);
+
     }
 }
