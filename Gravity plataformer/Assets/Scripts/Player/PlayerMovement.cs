@@ -15,6 +15,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float moveSpeed = 5f;
     [SerializeField] private float acceleration = 15f;
     [SerializeField] private Transform cameraTransform;
+    [SerializeField] public static bool isOnPlatform;
+    public bool IsOnPlatform => isOnPlatform;
 
     private GravityController gravity;
 
@@ -55,13 +57,20 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (!isOnPlatform) return;
+
+        MovePlayer();
+    }
+
+    private void MovePlayer()
+    {
         Vector3 gravityDir = gravity.CurrentGravityVector.normalized;
         Vector3 targetVelocity;
 
         bool gravityOnY = Mathf.Abs(Vector3.Dot(gravityDir, Vector3.up)) > 0.9f;
 
         if (gravityOnY) //Si la gravedad esta en Y, el movimiento es relativoa  la camara
-        {            
+        {
             Vector3 camForward = cameraTransform.forward;
             Vector3 camRight = cameraTransform.right;
 
@@ -97,5 +106,21 @@ public class PlayerMovement : MonoBehaviour
         );
 
         rb.linearVelocity += velocityChange;
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Platform"))
+        {
+            isOnPlatform = true;
+        }
+    }
+
+    private void OnCollisionExit(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Platform"))
+        {
+            isOnPlatform = false;
+        }
     }
 }

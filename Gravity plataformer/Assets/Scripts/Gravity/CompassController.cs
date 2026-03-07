@@ -41,7 +41,7 @@ public class CompassController : MonoBehaviour
         lookInput = input.Player.Look.ReadValue<Vector2>();
         rotatePressed = input.Player.RotateCompass.IsPressed();
 
-        if (rotatePressed)
+        if (rotatePressed && PlayerMovement.isOnPlatform)
         {
             //Seleccion de direccion
             RotateDirection();
