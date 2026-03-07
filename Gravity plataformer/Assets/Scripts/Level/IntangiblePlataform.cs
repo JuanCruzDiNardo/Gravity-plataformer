@@ -2,7 +2,7 @@ using UnityEngine;
 
 [RequireComponent(typeof(Collider))]
 [RequireComponent(typeof(Renderer))]
-public class IntangiblePlatform : MonoBehaviour
+public class IntangiblePlatform : MonoBehaviour, IActivable
 {
     [Header("Visual")]
     [Range(0f, 1f)]
@@ -59,5 +59,10 @@ public class IntangiblePlatform : MonoBehaviour
         Color color = runtimeMaterial.color;
         color.a = alpha;
         runtimeMaterial.color = color;
+    }
+
+    public void Switch()
+    {
+        ToggleState();
     }
 }
