@@ -56,4 +56,9 @@ public class GravityController : MonoBehaviour
 
         OnGravityChanged?.Invoke(currentDirection);
     }
+
+    public GravityDirection GetGravity()
+    {
+        return currentDirection;
+    }
 }

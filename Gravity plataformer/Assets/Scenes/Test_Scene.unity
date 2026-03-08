@@ -267,6 +267,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!33 &147726354
 MeshFilter:
@@ -522,6 +523,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!33 &394353021
 MeshFilter:
@@ -572,14 +574,14 @@ Light:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 410087039}
   m_Enabled: 1
-  serializedVersion: 11
+  serializedVersion: 12
   m_Type: 1
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Intensity: 2
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
-  m_CookieSize: 10
+  m_CookieSize2D: {x: 10, y: 10}
   m_Shadows:
     m_Type: 2
     m_Resolution: -1
@@ -900,6 +902,7 @@ GameObject:
   - component: {fileID: 1637687442}
   - component: {fileID: 1637687441}
   - component: {fileID: 1637687440}
+  - component: {fileID: 1637687443}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -1002,6 +1005,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!33 &1637687438
 MeshFilter:
@@ -1068,6 +1072,22 @@ MonoBehaviour:
   moveSpeed: 5
   acceleration: 15
   cameraTransform: {fileID: 330585546}
+--- !u!114 &1637687443
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1637687433}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eda6f1d1e8329e54d87fb29fb63d2542, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerRecorder
+  gravityController: {fileID: 1637687441}
+  ghostPrefab: {fileID: 6726086878626831246, guid: fe7c4ac716a7ade4b871fb0c6f2be7be, type: 3}
+  maxRecordTime: 30
+  recordRate: 0.02
 --- !u!1 &1907824699
 GameObject:
   m_ObjectHideFlags: 0
@@ -1171,6 +1191,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!33 &1907824703
 MeshFilter:
