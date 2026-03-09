@@ -12,6 +12,10 @@ public class PlayerRecorder : MonoBehaviour
     [SerializeField] private float maxRecordTime = 30f;
     [SerializeField] private float recordRate = 0.02f; //50 FPS
 
+    [Header("UI")]
+    [SerializeField] private GameObject recordIndicator;
+    [SerializeField] private UnityEngine.UI.Image recordFill;
+
     private List<PlayerFrame> frames = new List<PlayerFrame>();
 
     private bool recording = false;
@@ -51,12 +55,17 @@ public class PlayerRecorder : MonoBehaviour
         recordIntervalTimer = 0f;
         recording = true;
 
-        Debug.Log("Recording started");
+
+        recordIndicator.SetActive(true);
+        recordFill.fillAmount = 1f;
+        //Debug.Log("Recording started");
     }
 
     private void StopRecording()
     {
         recording = false;
+
+        recordIndicator.SetActive(false);
 
         if (frames.Count > 0)
         {
@@ -68,6 +77,8 @@ public class PlayerRecorder : MonoBehaviour
 
     private void Record()
     {
+        recordFill.fillAmount = 1f - (recordTimer / maxRecordTime);
+
         recordTimer += Time.deltaTime;
         recordIntervalTimer += Time.deltaTime;
 
