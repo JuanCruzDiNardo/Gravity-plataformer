@@ -16,6 +16,7 @@ public class GravityController : MonoBehaviour
     [Header("Gravity")]
     [SerializeField] private GravityDirection currentDirection = GravityDirection.NegY;
     [SerializeField] private float gravityStrength = 20f;
+    [SerializeField] private bool gravityLocked = false;
 
     private Rigidbody rb;
 
@@ -38,6 +39,8 @@ public class GravityController : MonoBehaviour
 
     public void SetGravity(GravityDirection newDirection)
     {
+        if(gravityLocked) return;
+
         currentDirection = newDirection;
         UpdateGravityVector();        
     }

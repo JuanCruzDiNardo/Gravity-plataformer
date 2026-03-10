@@ -17,6 +17,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private Transform cameraTransform;
     [SerializeField] public static bool isOnPlatform;
     public bool IsOnPlatform => isOnPlatform;
+    private int plataformCount;
 
     private GravityController gravity;
 
@@ -57,7 +58,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (!isOnPlatform) return;
+        //if (!isOnPlatform) return;
 
         MovePlayer();
     }
@@ -113,6 +114,7 @@ public class PlayerMovement : MonoBehaviour
         if (collision.gameObject.CompareTag("Platform"))
         {
             isOnPlatform = true;
+            plataformCount++;
         }
     }
 
@@ -120,7 +122,10 @@ public class PlayerMovement : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Platform"))
         {
-            isOnPlatform = false;
+            plataformCount--;
+
+            if (plataformCount == 0)
+                isOnPlatform = false;
         }
     }
 }
