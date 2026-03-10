@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using static GravityController;
 
@@ -15,6 +16,8 @@ public class MovingPlatform : MonoBehaviour
     [SerializeField] private MovementAxis axis = MovementAxis.X;
     [SerializeField] private float maxDisplacement = 5f;
     [SerializeField] private float moveSpeed = 3f;
+    [SerializeField] private bool toNegative = false;
+    [SerializeField] private bool invertDirection = false;
 
     [Header("Referencia")]
     [SerializeField] private GravityController gravityController;
@@ -132,7 +135,10 @@ public class MovingPlatform : MonoBehaviour
                 break;
         }
 
-        targetMax = startPosition + offset;
+        if (invertDirection)
+            targetMax = startPosition - offset;
+        else
+            targetMax = startPosition + offset;
     }
 
     private void UpdateTarget(GravityDirection gravity)
@@ -143,23 +149,23 @@ public class MovingPlatform : MonoBehaviour
         {
             case MovementAxis.X:
                 if (gravity == GravityDirection.PosX)
-                    currentTarget = targetMax;
+                    currentTarget = toNegative ? targetMin : targetMax;
                 else if (gravity == GravityDirection.NegX)
-                    currentTarget = targetMin;
+                    currentTarget = toNegative ? targetMax : targetMin;
                 break;
 
             case MovementAxis.Y:
                 if (gravity == GravityDirection.PosY)
-                    currentTarget = targetMax;
+                    currentTarget = toNegative ? targetMin : targetMax;
                 else if (gravity == GravityDirection.NegY)
-                    currentTarget = targetMin;
+                    currentTarget = toNegative ? targetMax : targetMin;
                 break;
 
             case MovementAxis.Z:
                 if (gravity == GravityDirection.PosZ)
-                    currentTarget = targetMax;
+                    currentTarget = toNegative ? targetMin : targetMax;
                 else if (gravity == GravityDirection.NegZ)
-                    currentTarget = targetMin;
+                    currentTarget = toNegative ? targetMax : targetMin;
                 break;
         }
 
@@ -188,13 +194,16 @@ public class MovingPlatform : MonoBehaviour
                 break;
         }
 
-        Vector3 end = start + offset;
+        Vector3 end;
 
-        // Línea de recorrido
+        if (invertDirection)
+            end = start - offset;
+        else
+            end = start + offset;
+
         Gizmos.color = Color.yellow;
         Gizmos.DrawLine(start, end);
 
-        // Cubo final
         Gizmos.color = new Color(0f, 1f, 0f, 0.4f);
         Gizmos.DrawCube(end, transform.localScale);
     }
