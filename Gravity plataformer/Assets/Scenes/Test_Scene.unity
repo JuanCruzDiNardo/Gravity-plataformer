@@ -225,7 +225,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 1, y: 4.71, z: 0}
-  m_LocalScale: {x: 6, y: 1, z: 1}
+  m_LocalScale: {x: 7, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 652731058}
@@ -1635,7 +1635,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86bfb3894e4939d47810a3bc95b98516, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::IntangiblePlatform
-  intangibleAlpha: 0.3
+  intangibleOpacity: 0.3
+  solidOpacity: 1
 --- !u!4 &2040981231 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2555955360323402577, guid: 17f99615beb95c24ba658b573e1d7c1f, type: 3}
@@ -1842,6 +1843,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Cube (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 5285787172603257501, guid: 7ff92ffe6297283448850c3f5f1495a3, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: d34907e5e6d39bd409f914582bcda34a, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1983,7 +1988,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6050014090033657978, guid: a646a460fec41bb469cc2f5f5bf7a34e, type: 3}
       propertyPath: m_LocalScale.x
-      value: 4
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 6050014090033657978, guid: a646a460fec41bb469cc2f5f5bf7a34e, type: 3}
       propertyPath: m_LocalPosition.x

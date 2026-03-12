@@ -6,24 +6,25 @@ public class IntangiblePlatform : MonoBehaviour, IActivable
 {
     [Header("Visual")]
     [Range(0f, 1f)]
-    [SerializeField] private float intangibleAlpha = 0.3f;
+    [SerializeField] private float intangibleOpacity = 0.3f;
+
+    [SerializeField] private float solidOpacity = 1f;
 
     private Collider platformCollider;
     private Renderer platformRenderer;
-    private Material runtimeMaterial;
+
+    private MaterialPropertyBlock propBlock;
 
     private bool isIntangible = false;
-    private float originalAlpha;
+
+    private static readonly int OpacityID = Shader.PropertyToID("_Opacity");
 
     private void Awake()
     {
         platformCollider = GetComponent<Collider>();
         platformRenderer = GetComponent<Renderer>();
 
-        // Instanciamos material para no modificar el sharedMaterial
-        runtimeMaterial = platformRenderer.material;
-
-        originalAlpha = runtimeMaterial.color.a;
+        propBlock = new MaterialPropertyBlock();
 
         SetSolidState();
     }
@@ -42,7 +43,7 @@ public class IntangiblePlatform : MonoBehaviour, IActivable
 
         platformCollider.enabled = false;
 
-        SetAlpha(intangibleAlpha);
+        SetOpacity(intangibleOpacity);
     }
 
     public void SetSolidState()
@@ -51,14 +52,14 @@ public class IntangiblePlatform : MonoBehaviour, IActivable
 
         platformCollider.enabled = true;
 
-        SetAlpha(originalAlpha);
+        SetOpacity(solidOpacity);
     }
 
-    private void SetAlpha(float alpha)
+    private void SetOpacity(float value)
     {
-        Color color = runtimeMaterial.color;
-        color.a = alpha;
-        runtimeMaterial.color = color;
+        platformRenderer.GetPropertyBlock(propBlock);
+        propBlock.SetFloat(OpacityID, value);
+        platformRenderer.SetPropertyBlock(propBlock);
     }
 
     public void Switch()
