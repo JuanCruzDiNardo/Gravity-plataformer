@@ -22,9 +22,23 @@ public class ExitController : MonoBehaviour
     [Header("Referencia Plataforma")]
     [SerializeField] private Renderer platformRenderer;
 
+    [Header("Trigger Salida")]
+    [SerializeField] private GameObject exitTriggerObject;
+
+    private Collider exitCollider;
+
     private List<Renderer> cubeRenderers = new List<Renderer>();
     private int activatedKeys = 0;
     private bool levelUnlocked = false;
+
+    private void Awake()
+    {
+        if (exitTriggerObject != null)
+        {
+            exitCollider = exitTriggerObject.GetComponent<Collider>();
+            exitTriggerObject.SetActive(false); // empieza deshabilitado
+        }
+    }
 
     private void Start()
     {
@@ -36,7 +50,6 @@ public class ExitController : MonoBehaviour
 
     private void CheckIfNoKeys()
     {
-        // Si no hay llaves cargadas, se desbloquea automáticamente
         if (keys == null || keys.Count == 0)
         {
             UnlockPlatform();
@@ -47,7 +60,6 @@ public class ExitController : MonoBehaviour
     {
         cubeRenderers.Clear();
 
-        // Generación de indicadores dinámicos por cada llave
         for (int i = 0; i < keys.Count; i++)
         {
             GameObject cube = Instantiate(cubePrefab, cubeContainer);
@@ -89,6 +101,9 @@ public class ExitController : MonoBehaviour
 
         if (platformRenderer != null)
             platformRenderer.sharedMaterial = platformCompletedMaterial;
+
+        if (exitTriggerObject != null)
+            exitTriggerObject.SetActive(true);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -98,6 +113,7 @@ public class ExitController : MonoBehaviour
 
         if (other.CompareTag("Player"))
         {
+            Debug.Log("exit level...");
             LoadNextLevel();
         }
     }
