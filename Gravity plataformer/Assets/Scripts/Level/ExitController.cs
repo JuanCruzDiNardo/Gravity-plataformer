@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using UnityEditorInternal.Profiling.Memory.Experimental;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -8,15 +7,17 @@ public class ExitController : MonoBehaviour
     [Header("Llaves")]
     [SerializeField] private List<KeyController> keys = new List<KeyController>();
 
-    [Header("Cubos Indicadores")]
+    [Header("Indicadores")]
     [SerializeField] private GameObject cubePrefab;
     [SerializeField] private Transform cubeContainer;
     [SerializeField] private float spacing = 1.2f;
 
-    [Header("Colores")]
-    [SerializeField] private Color inactiveColor = Color.gray;
-    [SerializeField] private Color activeColor = Color.green;
-    [SerializeField] private Color platformCompletedColor = Color.cyan;
+    [Header("Materiales de Indicadores")]
+    [SerializeField] private Material inactiveMaterial;
+    [SerializeField] private Material activeMaterial;
+
+    [Header("Material Plataforma")]
+    [SerializeField] private Material platformCompletedMaterial;
 
     [Header("Referencia Plataforma")]
     [SerializeField] private Renderer platformRenderer;
@@ -35,7 +36,8 @@ public class ExitController : MonoBehaviour
 
     private void CheckIfNoKeys()
     {
-        if (keys == null || keys.Count == 0) // Si no hay llaves cargadas, se desbloquea automaticamente 
+        // Si no hay llaves cargadas, se desbloquea automáticamente
+        if (keys == null || keys.Count == 0)
         {
             UnlockPlatform();
         }
@@ -45,14 +47,14 @@ public class ExitController : MonoBehaviour
     {
         cubeRenderers.Clear();
 
-        //Generacion de indicadores de forma dinamica por cada llave
+        // Generación de indicadores dinámicos por cada llave
         for (int i = 0; i < keys.Count; i++)
         {
             GameObject cube = Instantiate(cubePrefab, cubeContainer);
             cube.transform.localPosition = new Vector3(0f, i * spacing, 0f);
 
             Renderer rend = cube.GetComponent<Renderer>();
-            rend.material.color = inactiveColor;
+            rend.sharedMaterial = inactiveMaterial;
 
             cubeRenderers.Add(rend);
         }
@@ -63,16 +65,16 @@ public class ExitController : MonoBehaviour
         for (int i = 0; i < keys.Count; i++)
         {
             int index = i;
-            keys[i].Initialize(this, index); //Indica su index a cada llave
+            keys[i].Initialize(this, index);
         }
     }
 
     public void ActivateKey(int index)
     {
-        if (cubeRenderers[index].material.color == activeColor)
+        if (cubeRenderers[index].sharedMaterial == activeMaterial)
             return;
 
-        cubeRenderers[index].material.color = activeColor;
+        cubeRenderers[index].sharedMaterial = activeMaterial;
         activatedKeys++;
 
         if (activatedKeys >= keys.Count)
@@ -84,7 +86,9 @@ public class ExitController : MonoBehaviour
     private void UnlockPlatform()
     {
         levelUnlocked = true;
-        platformRenderer.material.color = platformCompletedColor;
+
+        if (platformRenderer != null)
+            platformRenderer.sharedMaterial = platformCompletedMaterial;
     }
 
     private void OnTriggerEnter(Collider other)

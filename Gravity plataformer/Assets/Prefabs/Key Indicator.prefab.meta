@@ -1,7 +1,14 @@
 fileFormatVersion: 2
-guid: 3e1bb055c9a6b7a4fb1abcc8d60cafd1
+guid: 7580b096a10e94f6ca3051aef94e835e
 PrefabImporter:
   externalObjects: {}
   userData: 
   assetBundleName: 
   assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 286714
+  packageName: Grid Master
+  packageVersion: 1.0.1
+  assetPath: Assets/Decimate/Grid Master/URP/Prefabs/GM-Ring.prefab
+  uploadId: 840046
