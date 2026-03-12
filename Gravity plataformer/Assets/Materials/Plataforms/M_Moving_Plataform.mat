@@ -31,7 +31,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Emission_Texture:
-        m_Texture: {fileID: 2800000, guid: e05cb5944643d41f4b5535949504b302, type: 3}
+        m_Texture: {fileID: 2800000, guid: 2b2440b1910ed4bb6a835e2d074a9865, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
@@ -61,6 +61,7 @@ Material:
     - _BUILTIN_QueueOffset: 0
     - _Emission: 1
     - _Metallic: 1
+    - _Opacity: 1
     - _QueueControl: 0
     - _QueueOffset: 0
     - _Smoothness: 1
