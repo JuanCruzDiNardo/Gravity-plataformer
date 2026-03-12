@@ -88,10 +88,11 @@ Material:
     - _Metallic: 0.5
     - _Metallic_Tiling: 1
     - _Offset: 1.39
+    - _Opacity: 1
     - _QueueControl: 0
     - _QueueOffset: 0
     - _Smoothness: 0.5
-    - _Tiling: 1
+    - _Tiling: 0.33
     m_Colors:
     - _Dirt_Color: {r: 0.3584906, g: 0.3584906, b: 0.3584906, a: 0}
     - _Emission_Color: {r: 0.9339623, g: 0.013216423, b: 0.013216423, a: 0}
