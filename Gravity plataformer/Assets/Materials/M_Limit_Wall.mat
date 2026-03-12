@@ -84,14 +84,14 @@ Material:
     - _Dirt_Height: 2
     - _Edge_Sharpness: 50
     - _Emission: 1
-    - _Emission_Tiling: 0.14
+    - _Emission_Tiling: 0.1
     - _Metallic: 1
     - _Metallic_Tiling: 0.07
     - _Offset: 1.39
     - _Opacity: 1
     - _QueueControl: 0
     - _QueueOffset: 0
-    - _Smoothness: 1
+    - _Smoothness: 0
     - _Tiling: 1
     m_Colors:
     - _Dirt_Color: {r: 0.18117811, g: 0.10346209, b: 0.23584908, a: 0}
