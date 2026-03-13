@@ -137,7 +137,7 @@ public class MenuManager : MonoBehaviour
     {
         int maxPage = Mathf.CeilToInt((float)totalLevels / levelsPerPage) - 1;
 
-        previousLevelsButton.interactable = currentPage > 0;
-        nextLevelsButton.interactable = currentPage < maxPage;
+        previousLevelsButton.gameObject.SetActive(currentPage > 0);
+        nextLevelsButton.gameObject.SetActive(currentPage < maxPage);
     }
 }
