@@ -114,13 +114,8 @@ public class ExitController : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             Debug.Log("exit level...");
-            LoadNextLevel();
+            GameManager.NextLevel();
         }
     }
 
-    private void LoadNextLevel()
-    {
-        Scene currentScene = SceneManager.GetActiveScene();
-        SceneManager.LoadScene(currentScene.buildIndex + 1);
-    }
 }
