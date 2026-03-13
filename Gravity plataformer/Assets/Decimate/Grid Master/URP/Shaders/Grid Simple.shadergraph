@@ -1969,7 +1969,7 @@
     "m_ObjectId": "60c3e3af990846b484c11f8d57ef16c7",
     "m_Datas": [],
     "m_ActiveSubTarget": {
-        "m_Id": "614b29e672cf449e8ea5b2686a551a5c"
+        "m_Id": "c55e61d04be844268c8dca146a382f20"
     },
     "m_AllowMaterialOverride": false,
     "m_SurfaceType": 1,
@@ -1979,14 +1979,6 @@
     "m_RenderFace": 2,
     "m_AlphaClip": false,
     "m_CustomEditorGUI": ""
-}
-
-{
-    "m_SGVersion": 0,
-    "m_Type": "UnityEditor.Rendering.BuiltIn.ShaderGraph.BuiltInLitSubTarget",
-    "m_ObjectId": "614b29e672cf449e8ea5b2686a551a5c",
-    "m_WorkflowMode": 1,
-    "m_NormalDropOffSpace": 0
 }
 
 {
@@ -2836,6 +2828,12 @@
 
 {
     "m_SGVersion": 0,
+    "m_Type": "UnityEditor.Rendering.BuiltIn.ShaderGraph.BuiltInUnlitSubTarget",
+    "m_ObjectId": "c55e61d04be844268c8dca146a382f20"
+}
+
+{
+    "m_SGVersion": 0,
     "m_Type": "UnityEditor.ShaderGraph.ObjectNode",
     "m_ObjectId": "c564681d9a01485f91e180e14da994ab",
     "m_Group": {
@@ -3445,8 +3443,8 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": 1309.9998779296875,
-            "y": 939.9999389648438,
+            "x": 1179.0,
+            "y": 845.0,
             "width": 116.0,
             "height": 34.0
         }
