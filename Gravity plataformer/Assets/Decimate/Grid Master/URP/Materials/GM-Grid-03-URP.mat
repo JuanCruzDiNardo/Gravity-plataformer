@@ -131,6 +131,7 @@ Material:
     - _Metallic: 0
     - _Metallic_Map_Multiplier: 1
     - _Metallic_Tiling: 1
+    - _Opacity: 1
     - _QueueControl: 0
     - _QueueOffset: 0
     - _ReceiveShadows: 1
