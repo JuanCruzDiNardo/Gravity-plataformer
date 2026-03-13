@@ -1,9 +1,11 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
+    private static PlayerInputAction action;
 
     private void Awake()
     {
@@ -16,6 +18,36 @@ public class GameManager : MonoBehaviour
 
         Instance = this;
         DontDestroyOnLoad(gameObject);
+
+        action = new PlayerInputAction();
+        action.Enable();
+    }
+
+    private void Update()
+    {
+        if(GetCurrentLevelIndex() == 0) return;
+
+        CheckPauseInput();
+        CheckResetInput();
+    }
+
+    private void CheckPauseInput()
+    {
+        if (action.Player.Pause.WasPressedThisFrame())
+        {
+            if (PauseManager.Instance.isPaused)
+                PauseManager.Instance.UnPause();
+            else
+                PauseManager.Instance.Pause();
+        }
+    }
+
+    private void CheckResetInput()
+    {
+        if (action.Player.Reset.WasPressedThisFrame())
+        {
+            ResetLevel();
+        }
     }
 
     public static void ResetLevel()

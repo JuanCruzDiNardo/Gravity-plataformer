@@ -43,18 +43,8 @@ public class PlayerMovement : MonoBehaviour
     
     void Update()
     {
-        moveInput = action.Player.Move.ReadValue<Vector2>();
-        CheckResetInput();
+        moveInput = action.Player.Move.ReadValue<Vector2>();        
     }
-
-    private void CheckResetInput()
-    {
-        if (action.Player.Reset.WasPressedThisFrame())
-        {
-           GameManager.ResetLevel();
-        }
-    }
-
 
     private void FixedUpdate()
     {
