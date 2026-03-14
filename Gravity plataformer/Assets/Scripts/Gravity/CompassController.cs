@@ -5,8 +5,15 @@ using static GravityController;
 public class CompassController : MonoBehaviour
 {
     [Header("Referencias")]
-    [SerializeField] private Transform arrowPivot; //Representaciopn visual
+    [SerializeField] private Transform arrowPivot;
     [SerializeField] private GravityController gravityController;
+
+    [Header("Materiales de estado")]
+    [SerializeField] private Material idleMaterial;     // Azul
+    [SerializeField] private Material rotatingMaterial; // Verde
+    [SerializeField] private Material disabledMaterial; // Rojo
+
+    private Renderer[] arrowRenderers;
 
     [Header("Rotación")]
     [SerializeField] private float mouseSensitivity = 0.2f;
@@ -24,6 +31,9 @@ public class CompassController : MonoBehaviour
     private void Awake()
     {
         input = new PlayerInputAction();
+
+        // Recupera todos los renderers del prefab de la flecha
+        arrowRenderers = arrowPivot.GetComponentsInChildren<Renderer>();
     }
 
     private void OnEnable() => input.Enable();
@@ -41,14 +51,14 @@ public class CompassController : MonoBehaviour
         lookInput = input.Player.Look.ReadValue<Vector2>();
         rotatePressed = input.Player.RotateCompass.IsPressed();
 
+        UpdateVisualState();
+
         if (rotatePressed && PlayerMovement.isOnPlatform)
         {
-            //Seleccion de direccion
             RotateDirection();
         }
         else
         {
-            //Ajuste al eje mas cercano al soltar
             SnapAndApplyGravity();
         }
     }
@@ -61,7 +71,6 @@ public class CompassController : MonoBehaviour
 
     private void RotateDirection()
     {
-        //Deteccion del control
         bool usingMouse =
             Mouse.current != null &&
             Mouse.current.delta.ReadValue() != Vector2.zero;
@@ -71,7 +80,6 @@ public class CompassController : MonoBehaviour
         float yaw = lookInput.x * sensitivity;
         float pitch = -lookInput.y * sensitivity;
 
-        //Rotaciones relativas al eje global
         Quaternion yawRotation = Quaternion.AngleAxis(yaw, Vector3.up);
         Quaternion pitchRotation = Quaternion.AngleAxis(pitch, Vector3.right);
 
@@ -82,13 +90,38 @@ public class CompassController : MonoBehaviour
     private void SnapAndApplyGravity()
     {
         if (rotatePressed) return;
-        //Detecta el eje mas cercano
+
         GravityDirection closest = GetClosestDirection(currentDirection);
-        //Convierte el enum en un vector 3
         Vector3 snapped = DirectionToVector(closest);
 
-        currentDirection = snapped; //Ajsute visual
+        currentDirection = snapped;
         gravityController.SetGravity(closest);
+    }
+
+    private void UpdateVisualState()
+    {
+        if (!PlayerMovement.isOnPlatform)
+        {
+            SetArrowMaterial(disabledMaterial);
+        }
+        else if (rotatePressed)
+        {
+            SetArrowMaterial(rotatingMaterial);
+        }
+        else
+        {
+            SetArrowMaterial(idleMaterial);
+        }
+    }
+
+    private void SetArrowMaterial(Material mat)
+    {
+        if (arrowRenderers == null) return;
+
+        for (int i = 0; i < arrowRenderers.Length; i++)
+        {
+            arrowRenderers[i].material = mat;
+        }
     }
 
     private GravityDirection GetClosestDirection(Vector3 dir)
@@ -96,7 +129,6 @@ public class CompassController : MonoBehaviour
         float maxDot = -Mathf.Infinity;
         GravityDirection closest = GravityDirection.PosY;
 
-        //Se evaluan todos los ejes
         Check(Vector3.right, GravityDirection.PosX);
         Check(Vector3.left, GravityDirection.NegX);
         Check(Vector3.up, GravityDirection.PosY);
@@ -108,7 +140,7 @@ public class CompassController : MonoBehaviour
 
         void Check(Vector3 axis, GravityDirection gravityDir)
         {
-            float dot = Vector3.Dot(dir, axis); //Detecta el eje con el que se alineo mas
+            float dot = Vector3.Dot(dir, axis);
             if (dot > maxDot)
             {
                 maxDot = dot;

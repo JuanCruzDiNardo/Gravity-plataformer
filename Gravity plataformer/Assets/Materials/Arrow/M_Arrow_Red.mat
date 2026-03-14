@@ -20,7 +20,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: GM-Grid-20-URP
+  m_Name: M_Arrow_Red
   m_Shader: {fileID: -6465566751694194690, guid: 44f8dfd6d74d14469bb0ef07b544f59e, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -85,7 +85,7 @@ Material:
     - _Tiling: 1
     m_Colors:
     - _Base_Color: {r: 0.2735849, g: 0.2735849, b: 0.2735849, a: 0}
-    - _Emission_Color: {r: 7.6290884, g: 5.911352, b: 0, a: 0}
+    - _Emission_Color: {r: 0, g: 24.32841, b: 129.51042, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!114 &1571984777279224109
