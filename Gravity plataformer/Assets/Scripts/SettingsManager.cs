@@ -2,6 +2,8 @@ using UnityEngine;
 
 public static class SettingsManager
 {
+    public static System.Action OnSettingsChanged;
+
     private const string SFX_VOLUME_KEY = "SFXVolume";
     private const string MOUSE_SENS_KEY = "MouseSensitivity";
     private const string INVERT_CLICK_KEY = "InvertMouseClick";
@@ -9,7 +11,7 @@ public static class SettingsManager
 
     // Valores por defecto
     private const float DEFAULT_VOLUME = 0.8f;
-    private const float DEFAULT_MOUSE_SENS = 1f;
+    private const float DEFAULT_MOUSE_SENS = 0.1f;
     private const int DEFAULT_INVERT_CLICK = 0;
     private const int DEFAULT_HOLD_CAMERA = 1;
 
@@ -30,6 +32,7 @@ public static class SettingsManager
         {
             PlayerPrefs.SetFloat(MOUSE_SENS_KEY, value);
             PlayerPrefs.Save();
+            OnSettingsChanged?.Invoke();
         }
     }
 

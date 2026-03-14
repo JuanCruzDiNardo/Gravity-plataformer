@@ -82,7 +82,7 @@ Material:
     - _QueueOffset: 10
     - _Smoothness: 1
     - _Tile: 1
-    - _Tiling: 1
+    - _Tiling: 1.26
     m_Colors:
     - _Base_Color: {r: 0.2735849, g: 0.2735849, b: 0.2735849, a: 0}
     - _Emission_Color: {r: 0, g: 24.32841, b: 129.51042, a: 0}

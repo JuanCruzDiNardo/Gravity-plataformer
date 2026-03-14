@@ -34,9 +34,27 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "RotateCameraInverted",
+                    "type": "Button",
+                    "id": "082a97c6-b04b-4984-aefa-70c9359dccfb",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "RotateCompass",
                     "type": "Button",
                     "id": "68be02de-1b59-4d1a-9106-1080417979a9",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "RotateCompassInverted",
+                    "type": "Button",
+                    "id": "3f98e9ac-d5b6-4331-af77-c16478a14328",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -205,6 +223,28 @@
                 },
                 {
                     "name": "",
+                    "id": "d9300e4b-e1b8-4778-a72d-b7ce7298898f",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "RotateCompassInverted",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "5aa8e8fc-4fbd-4543-a75d-885d6961fef6",
+                    "path": "<DualShockGamepad>/rightShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "RotateCompassInverted",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "1f9e9be7-6460-499b-97b4-43ab9df0a07c",
                     "path": "<Keyboard>/r",
                     "interactions": "",
@@ -266,6 +306,28 @@
                     "processors": "",
                     "groups": "",
                     "action": "Pause",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "c9557156-2baa-4c2a-8ae6-9388acc76122",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "RotateCameraInverted",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "b8a55368-6e81-4609-a20f-e176bf173102",
+                    "path": "<DualShockGamepad>/leftShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "RotateCameraInverted",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

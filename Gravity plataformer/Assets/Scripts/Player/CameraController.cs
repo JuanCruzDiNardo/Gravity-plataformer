@@ -26,30 +26,53 @@ public class CameraController : MonoBehaviour
 
     private Vector2 lookInput;
     private bool rotatePressed;
+    private bool rotateCompassPressed;
 
     private void Awake()
     {
         input = new PlayerInputAction();
+        UpdateSensitivity();
     }
 
     private void OnEnable()
     {
         input.Enable();
+        SettingsManager.OnSettingsChanged += UpdateSensitivity;
     }
 
     private void OnDisable()
     {
         input.Disable();
+        SettingsManager.OnSettingsChanged -= UpdateSensitivity;
+    }
+
+    public void UpdateSensitivity()
+    {
+        mouseSensitivity = SettingsManager.MouseSensitivity;
     }
 
     private void Update()
     {
-        //lectura de input
+        // lectura de input
         lookInput = input.Player.Look.ReadValue<Vector2>();
-        rotatePressed = input.Player.RotateCamera.IsPressed();
+
+        // determina qué acción usar según settings
+        if (SettingsManager.InvertMouseClick)
+            rotatePressed = input.Player.RotateCameraInverted.IsPressed();
+        else
+            rotatePressed = input.Player.RotateCamera.IsPressed();
+
+        if (SettingsManager.InvertMouseClick)
+            rotateCompassPressed = input.Player.RotateCompassInverted.IsPressed();
+        else
+            rotateCompassPressed = input.Player.RotateCompass.IsPressed();
+
+        // si no es necesario mantener el botón, siempre rota
+        if (!SettingsManager.HoldToMoveCamera)
+            rotatePressed = true;
 
         //si mantiene el click empieza a rotar
-        if (rotatePressed)
+        if (rotatePressed && !rotateCompassPressed)
         {
             //detecta el tipo de control
             bool usingMouse = Mouse.current != null && Mouse.current.delta.ReadValue() != Vector2.zero;

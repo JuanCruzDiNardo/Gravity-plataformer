@@ -9,11 +9,20 @@ public class CompassController : MonoBehaviour
     [SerializeField] private GravityController gravityController;
 
     [Header("Materiales de estado")]
-    [SerializeField] private Material idleMaterial;     // Azul
-    [SerializeField] private Material rotatingMaterial; // Verde
-    [SerializeField] private Material disabledMaterial; // Rojo
+    [SerializeField] private Material idleMaterial;
+    [SerializeField] private Material rotatingMaterial;
+    [SerializeField] private Material disabledMaterial;
 
     private Renderer[] arrowRenderers;
+
+    private enum CompassState
+    {
+        Idle,
+        Rotating,
+        Disabled
+    }
+
+    private CompassState currentState;
 
     [Header("Rotación")]
     [SerializeField] private float mouseSensitivity = 0.2f;
@@ -31,8 +40,6 @@ public class CompassController : MonoBehaviour
     private void Awake()
     {
         input = new PlayerInputAction();
-
-        // Recupera todos los renderers del prefab de la flecha
         arrowRenderers = arrowPivot.GetComponentsInChildren<Renderer>();
     }
 
@@ -44,12 +51,18 @@ public class CompassController : MonoBehaviour
         currentDirection = gravityController.CurrentGravityVector.normalized;
         visualDirection = currentDirection;
         arrowPivot.rotation = Quaternion.LookRotation(currentDirection);
+
+        SetState(CompassState.Idle);
     }
 
     private void Update()
     {
         lookInput = input.Player.Look.ReadValue<Vector2>();
-        rotatePressed = input.Player.RotateCompass.IsPressed();
+
+        if (SettingsManager.InvertMouseClick)
+            rotatePressed = input.Player.RotateCompassInverted.IsPressed();
+        else
+            rotatePressed = input.Player.RotateCompass.IsPressed();
 
         UpdateVisualState();
 
@@ -67,6 +80,51 @@ public class CompassController : MonoBehaviour
     {
         visualDirection = Vector3.Lerp(visualDirection, currentDirection, smoothRotation * Time.deltaTime);
         arrowPivot.rotation = Quaternion.LookRotation(visualDirection);
+    }
+
+    private void UpdateVisualState()
+    {
+        if (!PlayerMovement.isOnPlatform)
+            SetState(CompassState.Disabled);
+        else if (rotatePressed)
+            SetState(CompassState.Rotating);
+        else
+            SetState(CompassState.Idle);
+    }
+
+    private void SetState(CompassState newState)
+    {
+        if (currentState == newState)
+            return;
+
+        currentState = newState;
+
+        Material mat = idleMaterial;
+
+        switch (currentState)
+        {
+            case CompassState.Idle:
+                mat = idleMaterial;
+                break;
+
+            case CompassState.Rotating:
+                mat = rotatingMaterial;
+                break;
+
+            case CompassState.Disabled:
+                mat = disabledMaterial;
+                break;
+        }
+
+        ApplyMaterial(mat);
+    }
+
+    private void ApplyMaterial(Material mat)
+    {
+        for (int i = 0; i < arrowRenderers.Length; i++)
+        {
+            arrowRenderers[i].material = mat;
+        }
     }
 
     private void RotateDirection()
@@ -96,32 +154,6 @@ public class CompassController : MonoBehaviour
 
         currentDirection = snapped;
         gravityController.SetGravity(closest);
-    }
-
-    private void UpdateVisualState()
-    {
-        if (!PlayerMovement.isOnPlatform)
-        {
-            SetArrowMaterial(disabledMaterial);
-        }
-        else if (rotatePressed)
-        {
-            SetArrowMaterial(rotatingMaterial);
-        }
-        else
-        {
-            SetArrowMaterial(idleMaterial);
-        }
-    }
-
-    private void SetArrowMaterial(Material mat)
-    {
-        if (arrowRenderers == null) return;
-
-        for (int i = 0; i < arrowRenderers.Length; i++)
-        {
-            arrowRenderers[i].material = mat;
-        }
     }
 
     private GravityDirection GetClosestDirection(Vector3 dir)

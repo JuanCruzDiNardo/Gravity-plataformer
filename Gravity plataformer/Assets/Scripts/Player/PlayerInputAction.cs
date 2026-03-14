@@ -120,9 +120,27 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
+                    ""name"": ""RotateCameraInverted"",
+                    ""type"": ""Button"",
+                    ""id"": ""082a97c6-b04b-4984-aefa-70c9359dccfb"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
                     ""name"": ""RotateCompass"",
                     ""type"": ""Button"",
                     ""id"": ""68be02de-1b59-4d1a-9106-1080417979a9"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""RotateCompassInverted"",
+                    ""type"": ""Button"",
+                    ""id"": ""3f98e9ac-d5b6-4331-af77-c16478a14328"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
@@ -291,6 +309,28 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""d9300e4b-e1b8-4778-a72d-b7ce7298898f"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""RotateCompassInverted"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""5aa8e8fc-4fbd-4543-a75d-885d6961fef6"",
+                    ""path"": ""<DualShockGamepad>/rightShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""RotateCompassInverted"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""1f9e9be7-6460-499b-97b4-43ab9df0a07c"",
                     ""path"": ""<Keyboard>/r"",
                     ""interactions"": """",
@@ -354,6 +394,28 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
                     ""action"": ""Pause"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c9557156-2baa-4c2a-8ae6-9388acc76122"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""RotateCameraInverted"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b8a55368-6e81-4609-a20f-e176bf173102"",
+                    ""path"": ""<DualShockGamepad>/leftShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""RotateCameraInverted"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -365,7 +427,9 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
         m_Player_Move = m_Player.FindAction("Move", throwIfNotFound: true);
         m_Player_Look = m_Player.FindAction("Look", throwIfNotFound: true);
         m_Player_RotateCamera = m_Player.FindAction("RotateCamera", throwIfNotFound: true);
+        m_Player_RotateCameraInverted = m_Player.FindAction("RotateCameraInverted", throwIfNotFound: true);
         m_Player_RotateCompass = m_Player.FindAction("RotateCompass", throwIfNotFound: true);
+        m_Player_RotateCompassInverted = m_Player.FindAction("RotateCompassInverted", throwIfNotFound: true);
         m_Player_Reset = m_Player.FindAction("Reset", throwIfNotFound: true);
         m_Player_RecordAction = m_Player.FindAction("RecordAction", throwIfNotFound: true);
         m_Player_Pause = m_Player.FindAction("Pause", throwIfNotFound: true);
@@ -452,7 +516,9 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Move;
     private readonly InputAction m_Player_Look;
     private readonly InputAction m_Player_RotateCamera;
+    private readonly InputAction m_Player_RotateCameraInverted;
     private readonly InputAction m_Player_RotateCompass;
+    private readonly InputAction m_Player_RotateCompassInverted;
     private readonly InputAction m_Player_Reset;
     private readonly InputAction m_Player_RecordAction;
     private readonly InputAction m_Player_Pause;
@@ -480,9 +546,17 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
         /// </summary>
         public InputAction @RotateCamera => m_Wrapper.m_Player_RotateCamera;
         /// <summary>
+        /// Provides access to the underlying input action "Player/RotateCameraInverted".
+        /// </summary>
+        public InputAction @RotateCameraInverted => m_Wrapper.m_Player_RotateCameraInverted;
+        /// <summary>
         /// Provides access to the underlying input action "Player/RotateCompass".
         /// </summary>
         public InputAction @RotateCompass => m_Wrapper.m_Player_RotateCompass;
+        /// <summary>
+        /// Provides access to the underlying input action "Player/RotateCompassInverted".
+        /// </summary>
+        public InputAction @RotateCompassInverted => m_Wrapper.m_Player_RotateCompassInverted;
         /// <summary>
         /// Provides access to the underlying input action "Player/Reset".
         /// </summary>
@@ -530,9 +604,15 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
             @RotateCamera.started += instance.OnRotateCamera;
             @RotateCamera.performed += instance.OnRotateCamera;
             @RotateCamera.canceled += instance.OnRotateCamera;
+            @RotateCameraInverted.started += instance.OnRotateCameraInverted;
+            @RotateCameraInverted.performed += instance.OnRotateCameraInverted;
+            @RotateCameraInverted.canceled += instance.OnRotateCameraInverted;
             @RotateCompass.started += instance.OnRotateCompass;
             @RotateCompass.performed += instance.OnRotateCompass;
             @RotateCompass.canceled += instance.OnRotateCompass;
+            @RotateCompassInverted.started += instance.OnRotateCompassInverted;
+            @RotateCompassInverted.performed += instance.OnRotateCompassInverted;
+            @RotateCompassInverted.canceled += instance.OnRotateCompassInverted;
             @Reset.started += instance.OnReset;
             @Reset.performed += instance.OnReset;
             @Reset.canceled += instance.OnReset;
@@ -562,9 +642,15 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
             @RotateCamera.started -= instance.OnRotateCamera;
             @RotateCamera.performed -= instance.OnRotateCamera;
             @RotateCamera.canceled -= instance.OnRotateCamera;
+            @RotateCameraInverted.started -= instance.OnRotateCameraInverted;
+            @RotateCameraInverted.performed -= instance.OnRotateCameraInverted;
+            @RotateCameraInverted.canceled -= instance.OnRotateCameraInverted;
             @RotateCompass.started -= instance.OnRotateCompass;
             @RotateCompass.performed -= instance.OnRotateCompass;
             @RotateCompass.canceled -= instance.OnRotateCompass;
+            @RotateCompassInverted.started -= instance.OnRotateCompassInverted;
+            @RotateCompassInverted.performed -= instance.OnRotateCompassInverted;
+            @RotateCompassInverted.canceled -= instance.OnRotateCompassInverted;
             @Reset.started -= instance.OnReset;
             @Reset.performed -= instance.OnReset;
             @Reset.canceled -= instance.OnReset;
@@ -636,12 +722,26 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnRotateCamera(InputAction.CallbackContext context);
         /// <summary>
+        /// Method invoked when associated input action "RotateCameraInverted" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnRotateCameraInverted(InputAction.CallbackContext context);
+        /// <summary>
         /// Method invoked when associated input action "RotateCompass" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
         /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnRotateCompass(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "RotateCompassInverted" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnRotateCompassInverted(InputAction.CallbackContext context);
         /// <summary>
         /// Method invoked when associated input action "Reset" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
