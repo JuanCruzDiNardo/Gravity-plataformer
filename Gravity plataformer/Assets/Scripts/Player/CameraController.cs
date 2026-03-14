@@ -5,11 +5,16 @@ public class CameraController : MonoBehaviour
 {
     [Header("Target")]
     [SerializeField] private Transform target; //Player
-    [SerializeField] private Transform CompassCamera; 
+    [SerializeField] private Transform CompassCamera;
 
     [Header("Settings")]
     [SerializeField] private float distance = 6f;
-    [SerializeField] private float height = 2f;
+
+    [SerializeField] private float maxHeight = 2f;
+    [SerializeField] private float minHeight = 0f;
+    [SerializeField] private float heightSmooth = 6f;
+
+    private float currentHeight;
 
     [Header("Rotation")]
     [SerializeField] private float mouseSensitivity = 0.1f;
@@ -32,6 +37,8 @@ public class CameraController : MonoBehaviour
     {
         input = new PlayerInputAction();
         UpdateSensitivity();
+
+        currentHeight = maxHeight;
     }
 
     private void OnEnable()
@@ -74,13 +81,12 @@ public class CameraController : MonoBehaviour
         //si mantiene el click empieza a rotar
         if (rotatePressed && !rotateCompassPressed)
         {
-            //detecta el tipo de control
             bool usingMouse = Mouse.current != null && Mouse.current.delta.ReadValue() != Vector2.zero;
 
             if (usingMouse)
             {
                 yaw += lookInput.x * mouseSensitivity;
-                pitch -= lookInput.y * mouseSensitivity; //el pitch se resta para invertir el movimiento, mover el mouse hacia arriba te hace mirar hacia arriba
+                pitch -= lookInput.y * mouseSensitivity;
             }
             else
             {
@@ -97,22 +103,42 @@ public class CameraController : MonoBehaviour
     {
         if (target == null) return;
 
+        // suavizar rotación
         currentYaw = Mathf.Lerp(currentYaw, yaw, smoothRotation * Time.deltaTime);
         currentPitch = Mathf.Lerp(currentPitch, pitch, smoothRotation * Time.deltaTime);
 
         Quaternion rotation = Quaternion.Euler(currentPitch, currentYaw, 0f);
 
-        //calcula una orbita al rededor del jugador
+        // ===== LOGICA DE HEIGHT DINAMICO =====
+
+        float targetHeight;
+
+        if (currentPitch < 0)
+        {
+            float t = Mathf.InverseLerp(0f, -30f, currentPitch);
+            targetHeight = Mathf.Lerp(maxHeight, minHeight, t);
+        }
+        else
+        {
+            targetHeight = maxHeight;
+        }
+
+        currentHeight = Mathf.Lerp(currentHeight, targetHeight, heightSmooth * Time.deltaTime);
+
+        // ===== POSICION CAMARA =====
+
         Vector3 desiredPosition =
             target.position
             - (rotation * Vector3.forward * distance)
-            + Vector3.up * height;
+            + Vector3.up * currentHeight;
 
         transform.position = desiredPosition;
         transform.LookAt(target.position + Vector3.up * 1.5f);
 
-        CompassCamera.transform.position = desiredPosition;
-        CompassCamera.LookAt(target.position + Vector3.up * 1.5f);
-
+        if (CompassCamera != null)
+        {
+            CompassCamera.position = desiredPosition;
+            CompassCamera.LookAt(target.position + Vector3.up * 1.5f);
+        }
     }
 }
