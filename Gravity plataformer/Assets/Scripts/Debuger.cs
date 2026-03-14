@@ -22,6 +22,16 @@ public class Debuger : MonoBehaviour
     {
         if (Keyboard.current == null) return;
 
+        if (Keyboard.current.xKey.wasPressedThisFrame)
+        {
+            GameManager.NextLevel();
+        }
+
+        if (Keyboard.current.zKey.wasPressedThisFrame)
+        {
+            GameManager.PreviousLevel();
+        }
+
         if (Keyboard.current.digit1Key.wasPressedThisFrame)
         {
             gravity.SetGravity(GravityController.GravityDirection.PosX);
