@@ -24,6 +24,7 @@ public static class SettingsManager
         {
             PlayerPrefs.SetFloat(SFX_VOLUME_KEY, value);
             PlayerPrefs.Save();
+            OnSettingsChanged?.Invoke();
         }
     }
 
@@ -45,6 +46,7 @@ public static class SettingsManager
         {
             PlayerPrefs.SetInt(INVERT_CLICK_KEY, value ? 1 : 0);
             PlayerPrefs.Save();
+            OnSettingsChanged?.Invoke();
         }
     }
 
@@ -55,6 +57,7 @@ public static class SettingsManager
         {
             PlayerPrefs.SetInt(HOLD_CAMERA_KEY, value ? 1 : 0);
             PlayerPrefs.Save();
+            OnSettingsChanged?.Invoke();
         }
     }
 

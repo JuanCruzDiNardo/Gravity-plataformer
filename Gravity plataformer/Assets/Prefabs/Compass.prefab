@@ -195,7 +195,7 @@ MonoBehaviour:
   rotatingMaterial: {fileID: 2100000, guid: 7fb1828114e64624c899c4b2d8026ee0, type: 2}
   disabledMaterial: {fileID: 2100000, guid: 793d86f6b0e13a44791973ede6b681bb, type: 2}
   mouseSensitivity: 0.2
-  gamepadSensitivity: 100
+  gamepadSensitivity: 300
   smoothRotation: 15
 --- !u!1 &7853094784123984428
 GameObject:
