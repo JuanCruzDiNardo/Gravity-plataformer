@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 3765271321520482448}
   - component: {fileID: 2933063191132440086}
   - component: {fileID: 1781252021938166249}
+  - component: {fileID: 1675765432227487238}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -153,10 +154,31 @@ MonoBehaviour:
   target: {fileID: 1124994424457008304}
   CompassCamera: {fileID: 0}
   distance: 6
-  height: 2
+  maxHeight: 2
+  minHeight: 0
+  heightSmooth: 6
   mouseSensitivity: 0.1
   gamepadSensitivity: 100
   smoothRotation: 10
+--- !u!114 &1675765432227487238
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 946623401205942915}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4bd5838e8aae5f3448370ba61de93196, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CameraObstacleTransparency
+  player: {fileID: 1124994424457008304}
+  cam: {fileID: 3367153965141583926}
+  sphereRadius: 0.3
+  transparency: 0.5
+  obstacleLayers:
+    serializedVersion: 2
+    m_Bits: 55
 --- !u!1 &6726086878626831246
 GameObject:
   m_ObjectHideFlags: 0
