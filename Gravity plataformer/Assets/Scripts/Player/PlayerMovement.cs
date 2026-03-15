@@ -29,7 +29,8 @@ public class PlayerMovement : MonoBehaviour
         gravity = GetComponent<GravityController>();
 
         rb.freezeRotation = true;
-        rb.interpolation = RigidbodyInterpolation.Interpolate;
+        rb.interpolation = RigidbodyInterpolation.Interpolate;        
+
     }
 
     private void OnEnable()

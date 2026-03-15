@@ -1369,6 +1369,7 @@ GameObject:
   m_Component:
   - component: {fileID: 493152256}
   - component: {fileID: 493152255}
+  - component: {fileID: 493152257}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -1405,6 +1406,37 @@ Transform:
   - {fileID: 1330972292}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &493152257
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 493152254}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3d80d408b1bfbce4b91d0a15ea5885aa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AudioManager
+  sounds:
+  - id: gravity_shift
+    clip: {fileID: 8300000, guid: 9ad42a97f415e484b8a6cbaacb91bc0a, type: 3}
+    volume: 0.1
+    loop: 0
+    spatial: 0
+    source: {fileID: 0}
+  - id: key_pickup
+    clip: {fileID: 8300000, guid: ade1f855cb78baf48881044f70265337, type: 3}
+    volume: 0.1
+    loop: 0
+    spatial: 0
+    source: {fileID: 0}
+  - id: level_start
+    clip: {fileID: 8300000, guid: 8511c4096dd53e74da51aaddccfb7776, type: 3}
+    volume: 0.1
+    loop: 0
+    spatial: 0
+    source: {fileID: 0}
 --- !u!1 &602207166
 GameObject:
   m_ObjectHideFlags: 0
@@ -6318,6 +6350,10 @@ PrefabInstance:
     - target: {fileID: 6543192910165957385, guid: 6507b534686876b42b418bbdb260840d, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7147591134307067819, guid: 6507b534686876b42b418bbdb260840d, type: 3}
+      propertyPath: m_MaxValue
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

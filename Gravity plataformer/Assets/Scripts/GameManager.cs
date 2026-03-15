@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
@@ -6,6 +7,8 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
     private static PlayerInputAction action;
+
+    public static event Action onLevelStart;
 
     private void Awake()
     {
@@ -68,7 +71,10 @@ public class GameManager : MonoBehaviour
     public static void LoadLevel(int index)
     {
         if (index >= 0 && index < SceneManager.sceneCountInBuildSettings)
+        {
             SceneManager.LoadScene(index);
+            onLevelStart?.Invoke();
+        }            
         else
             Debug.Log($"El índice {index} no pertenece a una escena válida.");
     }

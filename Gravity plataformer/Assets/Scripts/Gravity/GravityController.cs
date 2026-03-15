@@ -41,8 +41,11 @@ public class GravityController : MonoBehaviour
     {
         if(gravityLocked) return;
 
+        // Si la gravedad es la misma, no hacer nada
+        if (newDirection == currentDirection) return;
+
         currentDirection = newDirection;
-        UpdateGravityVector();        
+        UpdateGravityVector();
     }
 
     private void UpdateGravityVector()
@@ -57,7 +60,8 @@ public class GravityController : MonoBehaviour
             case GravityDirection.NegZ: CurrentGravityVector = Vector3.back; break;
         }
 
-        OnGravityChanged?.Invoke(currentDirection);
+        OnGravityChanged?.Invoke(currentDirection);        
+
     }
 
     public GravityDirection GetGravity()
