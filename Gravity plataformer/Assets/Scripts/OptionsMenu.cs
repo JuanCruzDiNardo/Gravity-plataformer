@@ -10,6 +10,7 @@ public class OptionsMenu : MonoBehaviour
     [Header("Toggles")]
     [SerializeField] private Toggle invertClickToggle;
     [SerializeField] private Toggle holdCameraToggle;
+    [SerializeField] private Toggle discreteCompassToggle;
 
     private void Start()
     {
@@ -24,6 +25,7 @@ public class OptionsMenu : MonoBehaviour
 
         invertClickToggle.isOn = SettingsManager.InvertMouseClick;
         holdCameraToggle.isOn = SettingsManager.HoldToMoveCamera;
+        discreteCompassToggle.isOn = SettingsManager.UseDiscreteCompass;
     }
 
     private void RegisterUIEvents()
@@ -33,6 +35,7 @@ public class OptionsMenu : MonoBehaviour
 
         invertClickToggle.onValueChanged.AddListener(SetInvertClick);
         holdCameraToggle.onValueChanged.AddListener(SetHoldCamera);
+        discreteCompassToggle.onValueChanged.AddListener(SetDiscreteCompass);
     }
 
     private void SetSFXVolume(float value)
@@ -53,5 +56,10 @@ public class OptionsMenu : MonoBehaviour
     private void SetHoldCamera(bool value)
     {
         SettingsManager.HoldToMoveCamera = value;
+    }
+
+    private void SetDiscreteCompass(bool value)
+    {
+        SettingsManager.UseDiscreteCompass = value;
     }
 }

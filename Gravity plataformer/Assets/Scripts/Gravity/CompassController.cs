@@ -15,16 +15,10 @@ public class CompassController : MonoBehaviour
 
     private Renderer[] arrowRenderers;
 
-    private enum CompassState
-    {
-        Idle,
-        Rotating,
-        Disabled
-    }
-
+    private enum CompassState { Idle, Rotating, Disabled }
     private CompassState currentState;
 
-    [Header("Rotación")]
+    [Header("Rotación libre (mouse / gamepad)")]
     [SerializeField] private float mouseSensitivity = 0.2f;
     [SerializeField] private float gamepadSensitivity = 150f;
     [SerializeField] private float smoothRotation = 15f;
@@ -35,7 +29,11 @@ public class CompassController : MonoBehaviour
     private Vector3 visualDirection;
 
     private Vector2 lookInput;
+    private Vector2 moveInput;
+
     private bool rotatePressed;
+    private bool discreteMode;
+    private bool inputConsumed;
 
     private void Awake()
     {
@@ -50,6 +48,7 @@ public class CompassController : MonoBehaviour
     {
         currentDirection = gravityController.CurrentGravityVector.normalized;
         visualDirection = currentDirection;
+
         arrowPivot.rotation = Quaternion.LookRotation(currentDirection);
 
         SetState(CompassState.Idle);
@@ -58,6 +57,7 @@ public class CompassController : MonoBehaviour
     private void Update()
     {
         lookInput = input.Player.Look.ReadValue<Vector2>();
+        moveInput = input.Player.Move.ReadValue<Vector2>();
 
         if (SettingsManager.InvertMouseClick)
             rotatePressed = input.Player.RotateCompassInverted.IsPressed();
@@ -68,11 +68,32 @@ public class CompassController : MonoBehaviour
 
         if (rotatePressed && PlayerMovement.isOnPlatform)
         {
-            RotateDirection();
+            if (SettingsManager.UseDiscreteCompass)
+            {
+                if (!discreteMode)
+                {
+                    discreteMode = true;
+                    inputConsumed = false;
+                }
+
+                HandleDiscreteRotation();
+            }
+            else
+            {
+                RotateDirection();
+            }
         }
         else
         {
-            SnapAndApplyGravity();
+            if (discreteMode)
+            {
+                discreteMode = false;
+                SnapAndApplyGravity();
+            }
+            else
+            {
+                SnapAndApplyGravity();
+            }
         }
     }
 
@@ -94,8 +115,7 @@ public class CompassController : MonoBehaviour
 
     private void SetState(CompassState newState)
     {
-        if (currentState == newState)
-            return;
+        if (currentState == newState) return;
 
         currentState = newState;
 
@@ -127,13 +147,17 @@ public class CompassController : MonoBehaviour
         }
     }
 
+    // ------------------------------
+    // ROTACIÓN LIBRE ORIGINAL
+    // ------------------------------
+
     private void RotateDirection()
     {
-        bool usingMouse =
-            Mouse.current != null &&
-            Mouse.current.delta.ReadValue() != Vector2.zero;
+        bool usingMouse = Mouse.current != null && Mouse.current.delta.ReadValue() != Vector2.zero;
 
-        float sensitivity = usingMouse ? mouseSensitivity : gamepadSensitivity * Time.deltaTime;
+        float sensitivity = usingMouse
+            ? mouseSensitivity
+            : gamepadSensitivity * Time.deltaTime;
 
         float yaw = lookInput.x * sensitivity;
         float pitch = -lookInput.y * sensitivity;
@@ -145,16 +169,65 @@ public class CompassController : MonoBehaviour
         currentDirection.Normalize();
     }
 
+    // ------------------------------
+    // ROTACIÓN DISCRETA WASD
+    // ------------------------------
+
+    private void HandleDiscreteRotation()
+    {
+        if (moveInput.magnitude < 0.5f)
+        {
+            inputConsumed = false;
+            return;
+        }
+
+        if (inputConsumed) return;
+        inputConsumed = true;
+
+        Vector3 forward = currentDirection;
+
+        Vector3 right = Vector3.Cross(Vector3.up, forward).normalized;
+
+        if (right.sqrMagnitude < 0.01f)
+            right = Vector3.Cross(Vector3.forward, forward).normalized;
+
+        Vector3 up = Vector3.Cross(forward, right).normalized;
+
+        if (moveInput.y > 0.5f)        // W
+            currentDirection = up;
+
+        else if (moveInput.y < -0.5f)  // S
+            currentDirection = -up;
+
+        else if (moveInput.x > 0.5f)   // D
+            currentDirection = right;
+
+        else if (moveInput.x < -0.5f)  // A
+            currentDirection = -right;
+
+        currentDirection.Normalize();
+    }
+
+    // ------------------------------
+    // SNAP Y APLICAR GRAVEDAD
+    // ------------------------------
+
     private void SnapAndApplyGravity()
     {
         if (rotatePressed) return;
 
         GravityDirection closest = GetClosestDirection(currentDirection);
+
         Vector3 snapped = DirectionToVector(closest);
 
         currentDirection = snapped;
+
         gravityController.SetGravity(closest);
     }
+
+    // ------------------------------
+    // UTILIDADES
+    // ------------------------------
 
     private GravityDirection GetClosestDirection(Vector3 dir)
     {
@@ -173,6 +246,7 @@ public class CompassController : MonoBehaviour
         void Check(Vector3 axis, GravityDirection gravityDir)
         {
             float dot = Vector3.Dot(dir, axis);
+
             if (dot > maxDot)
             {
                 maxDot = dot;

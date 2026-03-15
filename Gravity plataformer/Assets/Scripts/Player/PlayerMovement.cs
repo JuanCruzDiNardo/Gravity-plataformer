@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -55,6 +56,8 @@ public class PlayerMovement : MonoBehaviour
 
     private void MovePlayer()
     {
+        if (action.Player.RotateCompass.IsPressed() && SettingsManager.UseDiscreteCompass) return;
+
         Vector3 gravityDir = gravity.CurrentGravityVector.normalized;
         Vector3 targetVelocity;
 

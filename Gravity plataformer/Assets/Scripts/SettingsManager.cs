@@ -8,12 +8,14 @@ public static class SettingsManager
     private const string MOUSE_SENS_KEY = "MouseSensitivity";
     private const string INVERT_CLICK_KEY = "InvertMouseClick";
     private const string HOLD_CAMERA_KEY = "HoldCamera";
+    private const string DISCRETE_COMPASS_KEY = "DiscreteCompass";
 
     // Valores por defecto
     private const float DEFAULT_VOLUME = 0.8f;
     private const float DEFAULT_MOUSE_SENS = 0.1f;
     private const int DEFAULT_INVERT_CLICK = 0;
     private const int DEFAULT_HOLD_CAMERA = 1;
+    private const int DEFAULT_DISCRETE_COMPASS = 1;
 
     public static float SFXVolume
     {
@@ -53,6 +55,17 @@ public static class SettingsManager
         {
             PlayerPrefs.SetInt(HOLD_CAMERA_KEY, value ? 1 : 0);
             PlayerPrefs.Save();
+        }
+    }
+
+    public static bool UseDiscreteCompass
+    {
+        get => PlayerPrefs.GetInt(DISCRETE_COMPASS_KEY, DEFAULT_DISCRETE_COMPASS) == 1;
+        set
+        {
+            PlayerPrefs.SetInt(DISCRETE_COMPASS_KEY, value ? 1 : 0);
+            PlayerPrefs.Save();
+            OnSettingsChanged?.Invoke();
         }
     }
 }
