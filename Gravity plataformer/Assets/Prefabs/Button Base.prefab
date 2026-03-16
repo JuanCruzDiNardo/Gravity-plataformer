@@ -126,8 +126,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37b5dd747be6be64c92669748edcf84c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ButtonController
+  buttonMode: 1
   buttonTop: {fileID: 4271468534951429204}
-  pressDistance: 0.2
+  pressDistance: 0.35
   pressSpeed: 5
   activables: []
 --- !u!1 &5117925530064018402

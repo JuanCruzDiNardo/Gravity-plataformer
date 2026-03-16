@@ -1,8 +1,19 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class ButtonController : MonoBehaviour
 {
+    public enum ButtonMode
+    {
+        Pressure,   //Funciona mientras se pisa
+        Toggle      //Interruptor
+    }
+
+    [Header("Modo")]
+    [SerializeField] private ButtonMode buttonMode = ButtonMode.Pressure;
+
     [Header("Referencias")]
     [SerializeField] private Transform buttonTop;
 
@@ -12,29 +23,29 @@ public class ButtonController : MonoBehaviour
 
     [Header("Objetos activables")]
     [SerializeField] private List<MonoBehaviour> activables;
+    
+    public static event Action OnPressed;
+    public static event Action OnReleased;
 
     private List<IActivable> cachedActivables = new List<IActivable>();
 
     private Vector3 startLocalPos;
     private Vector3 pressedLocalPos;
 
-    private bool isPressed;
+    private bool isPressed;    
 
     void Start()
     {
         startLocalPos = buttonTop.localPosition;
-
-        //Se mueve en el eje local negativo de la base
         pressedLocalPos = startLocalPos + Vector3.down * pressDistance;
 
         foreach (var obj in activables)
         {
             if (obj is IActivable activable)
-            {
                 cachedActivables.Add(activable);
-            }
         }
     }
+
     private void ActivateObjects()
     {
         foreach (var activable in cachedActivables)
@@ -56,19 +67,41 @@ public class ButtonController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("Player"))
+        if (!other.CompareTag("Player")) return;        
+
+        if (buttonMode == ButtonMode.Pressure)
         {
-            isPressed = true;
+            if (!isPressed)
+            {
+                isPressed = true;
+                ActivateObjects();
+                OnPressed?.Invoke();
+            }
+        }
+        else // Toggle
+        {
+            isPressed = !isPressed;
             ActivateObjects();
+
+            if (isPressed)
+                OnPressed?.Invoke();
+            else
+                OnReleased?.Invoke();
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.gameObject.CompareTag("Player"))
+        if (!other.CompareTag("Player")) return;
+
+        if (buttonMode == ButtonMode.Pressure)
         {
-            isPressed = false;
-            ActivateObjects();
+            if (isPressed)
+            {
+                isPressed = false;
+                ActivateObjects();
+                OnReleased?.Invoke();
+            }
         }
     }
 

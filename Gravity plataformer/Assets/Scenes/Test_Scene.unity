@@ -1215,10 +1215,6 @@ PrefabInstance:
       value: Button Base
       objectReference: {fileID: 0}
     - target: {fileID: 4901527854576193786, guid: 972e7c90febfb104c95518d2e45587a2, type: 3}
-      propertyPath: pressDistance
-      value: 0.35
-      objectReference: {fileID: 0}
-    - target: {fileID: 4901527854576193786, guid: 972e7c90febfb104c95518d2e45587a2, type: 3}
       propertyPath: activables.Array.size
       value: 2
       objectReference: {fileID: 0}
@@ -1684,6 +1680,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3256774216800428621, guid: 46aea46f37af76a478a8d7aecb12c1a8, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.084
+      objectReference: {fileID: 0}
+    - target: {fileID: 4791641272778907217, guid: 46aea46f37af76a478a8d7aecb12c1a8, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 797d91a983445044dbd3b7d4b8fea023, type: 2}
+    - target: {fileID: 4875012897823923816, guid: 46aea46f37af76a478a8d7aecb12c1a8, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 76d4a77f08cf85d4dbbed6a2ce3e311d, type: 2}
     - target: {fileID: 7155822770465882438, guid: 46aea46f37af76a478a8d7aecb12c1a8, type: 3}
       propertyPath: m_LocalPosition.x
       value: -3
