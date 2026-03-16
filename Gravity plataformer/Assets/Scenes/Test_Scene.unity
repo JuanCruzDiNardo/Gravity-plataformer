@@ -1346,6 +1346,14 @@ PrefabInstance:
       propertyPath: CompassCamera
       value: 
       objectReference: {fileID: 573645462}
+    - target: {fileID: 2902092941446900676, guid: cd31bd197eacaef46901281288b533bc, type: 3}
+      propertyPath: recordFill
+      value: 
+      objectReference: {fileID: 70847242}
+    - target: {fileID: 2902092941446900676, guid: cd31bd197eacaef46901281288b533bc, type: 3}
+      propertyPath: recordIndicator
+      value: 
+      objectReference: {fileID: 1685577616}
     - target: {fileID: 6726086878626831246, guid: cd31bd197eacaef46901281288b533bc, type: 3}
       propertyPath: m_Name
       value: Player
