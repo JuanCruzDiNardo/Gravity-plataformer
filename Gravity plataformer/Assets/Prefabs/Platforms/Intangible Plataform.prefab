@@ -125,4 +125,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86bfb3894e4939d47810a3bc95b98516, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::IntangiblePlatform
-  intangibleAlpha: 0.3
+  solidMaterial: {fileID: 2100000, guid: d34907e5e6d39bd409f914582bcda34a, type: 2}
+  intangibleMaterial: {fileID: 2100000, guid: 180f3b97af56f44baa95d03254ee2d6f, type: 2}
