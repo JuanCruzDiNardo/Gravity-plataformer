@@ -4,27 +4,19 @@ using UnityEngine;
 [RequireComponent(typeof(Renderer))]
 public class IntangiblePlatform : MonoBehaviour, IActivable
 {
-    [Header("Visual")]
-    [Range(0f, 1f)]
-    [SerializeField] private float intangibleOpacity = 0.3f;
-
-    [SerializeField] private float solidOpacity = 1f;
+    [Header("Materiales")]
+    [SerializeField] private Material solidMaterial;
+    [SerializeField] private Material intangibleMaterial;
 
     private Collider platformCollider;
     private Renderer platformRenderer;
 
-    private MaterialPropertyBlock propBlock;
-
     private bool isIntangible = false;
-
-    private static readonly int OpacityID = Shader.PropertyToID("_Opacity");
 
     private void Awake()
     {
         platformCollider = GetComponent<Collider>();
         platformRenderer = GetComponent<Renderer>();
-
-        propBlock = new MaterialPropertyBlock();
 
         SetSolidState();
     }
@@ -43,7 +35,8 @@ public class IntangiblePlatform : MonoBehaviour, IActivable
 
         platformCollider.enabled = false;
 
-        SetOpacity(intangibleOpacity);
+        if (intangibleMaterial != null)
+            platformRenderer.material = intangibleMaterial;
     }
 
     public void SetSolidState()
@@ -52,14 +45,8 @@ public class IntangiblePlatform : MonoBehaviour, IActivable
 
         platformCollider.enabled = true;
 
-        SetOpacity(solidOpacity);
-    }
-
-    private void SetOpacity(float value)
-    {
-        platformRenderer.GetPropertyBlock(propBlock);
-        propBlock.SetFloat(OpacityID, value);
-        platformRenderer.SetPropertyBlock(propBlock);
+        if (solidMaterial != null)
+            platformRenderer.material = solidMaterial;
     }
 
     public void Switch()
