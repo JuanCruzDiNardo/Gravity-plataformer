@@ -74,9 +74,12 @@ public class GameManager : MonoBehaviour
         {
             SceneManager.LoadScene(index);
             onLevelStart?.Invoke();
-        }            
+        }
         else
+        {
             Debug.Log($"El índice {index} no pertenece a una escena válida.");
+            SceneManager.LoadScene(0);
+        }            
     }
 
     private static int GetCurrentLevelIndex()
