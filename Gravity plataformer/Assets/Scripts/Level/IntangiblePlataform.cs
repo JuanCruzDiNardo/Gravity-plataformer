@@ -7,11 +7,11 @@ public class IntangiblePlatform : MonoBehaviour, IActivable
     [Header("Materiales")]
     [SerializeField] private Material solidMaterial;
     [SerializeField] private Material intangibleMaterial;
+    [SerializeField] private bool startIntenngible = false;
+    [SerializeField] private bool isIntangible = false;
 
     private Collider platformCollider;
-    private Renderer platformRenderer;
-
-    private bool isIntangible = false;
+    private Renderer platformRenderer;    
 
     private void Awake()
     {
@@ -19,6 +19,8 @@ public class IntangiblePlatform : MonoBehaviour, IActivable
         platformRenderer = GetComponent<Renderer>();
 
         SetSolidState();
+        if (startIntenngible)
+            ToggleState();
     }
 
     public void ToggleState()
